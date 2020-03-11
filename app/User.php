@@ -6,10 +6,12 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -40,9 +42,18 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     // Relationships with User Table
+
+
+    public function role()
+    {
+        return $this->belongsToMany(Role::class, 'role_user');
+    }
+
+    /*              Lendrit
     public function userRoles(){
         return $this->hasMany('App\UserRole');
-    } 
+    }
+    */
 
     public function reservation(){
         return $this->hasMany('App\Reservation');

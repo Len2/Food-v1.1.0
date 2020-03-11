@@ -4,8 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Spatie\Permission\Traits\HasRoles;
+
 class Task extends Model
 {
+    use HasRoles;
     public $timestamps=false;
     protected $fillable=
     [

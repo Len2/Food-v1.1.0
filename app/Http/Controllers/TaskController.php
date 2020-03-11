@@ -4,6 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use App\Providers\AuthServiceProvider;
+use  JWTAuth;
+use  App\User;
+
+
 
 class TaskController extends Controller
 {
@@ -14,6 +21,28 @@ class TaskController extends Controller
      */
     public function index()
     {
+//        if(! $user= JWTAuth::parseToken()->authenticate()){
+//            return response()->json(['meassage'=>'User not found'],404);
+//        }
+//        if (Auth::check()) {
+//           echo Auth::user();
+//        }else{
+//            echo "Not login";
+//        }
+
+//        $user=Auth::user();
+//        echo $user->can('edit articles');
+
+//        if (! Auth::user()->can('tasks_manage')) {
+//            return "Not permissions";
+//        }
+//
+//
+
+//        if (! Gate::allows('tasks_manage')) {
+//            return abort(401);
+//        }
+
 
         $task = Task::get();
         if(is_null($task)){
