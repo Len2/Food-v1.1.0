@@ -51,6 +51,8 @@ class PageController extends Controller
 
         $pages=Page::create($request->all());
         return response()->json($pages,201);
+
+//        echo "Test";
     }
 
     /**

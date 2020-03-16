@@ -7,13 +7,25 @@ use App\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Providers\AuthServiceProvider;
+use Illuminate\Auth\Access\Response;
 use  JWTAuth;
 use  App\User;
 
 
 
+
+
+
 class TaskController extends Controller
 {
+
+    function __construct()
+    {
+         $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:user-create', ['only' => ['create','store']]);
+         $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -24,31 +36,32 @@ class TaskController extends Controller
 //        if(! $user= JWTAuth::parseToken()->authenticate()){
 //            return response()->json(['meassage'=>'User not found'],404);
 //        }
-//        if (Auth::check()) {
-//           echo Auth::user();
-//        }else{
-//            echo "Not login";
-//        }
+
+
+        if (! Gate::allows('user-list')) {
+//            return abort(401);
+            return "not allowed";
+         //   return "Test";
+        }
+
+        return Auth::user();
 
 //        $user=Auth::user();
-//        echo $user->can('edit articles');
+//        return $user;
 
-//        if (! Auth::user()->can('tasks_manage')) {
-//            return "Not permissions";
+//        echo "Test";
+
+        //echo "ttttt";
+     //  return auth()->user()->hasAnyPermission('user-list');
+
+      //  echo "Test";
+
+
+//        $task = Task::get();
+//        if(is_null($task)){
+//          return response()->json(["Error"=>"Task, not found"],404);
 //        }
-//
-//
-
-//        if (! Gate::allows('tasks_manage')) {
-//            return abort(401);
-//        }
-
-
-        $task = Task::get();
-        if(is_null($task)){
-          return response()->json(["Error"=>"Task, not found"],404);
-        }
-        return response()->json(["data" => $task],200);
+//        return response()->json(["data" => $task],200);
     }
 
     /**

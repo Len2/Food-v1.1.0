@@ -27,6 +27,6 @@ class CreatePageRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('page__roles');
+        Schema::dropIfExists('page_roles');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api\ACL;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,9 +9,10 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class UserController extends Controller
+class LoginController extends Controller
 {
 
+    public $loginAfterSignUp = true;
     public  function signup (Request $request)
     {
         $this->validate($request, [
@@ -22,15 +23,20 @@ class UserController extends Controller
         $user = new User([
             'firstName' => $request->input('firstName'),
             'lastName' => $request->input('lastName'),
-                'address_id' => $request->input('address_id'),
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password'))
         ]);
         $user->save();
+
+        $credentials = request(['email', 'password']);
+        $token = auth('api')->attempt($credentials);
         return response()->json([
+           'token' => $token,
             'message' => 'Successfully created user!'
-        ], 201);
+
+        ], 200);
     }
+
     public  function signin (Request $request)
     {
         try{

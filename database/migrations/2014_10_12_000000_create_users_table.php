@@ -19,7 +19,6 @@ class CreateUsersTable extends Migration
             $table->string('lastName');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('address_id');
             $table->rememberToken();
             // $table->foreign('address_id')->references('id')->on('adresses')->onDelete('cascade');
             $table->timestamps();
