@@ -121,5 +121,6 @@ class PageController extends Controller
         }
         $page->delete();
         return response()->json(null,200);
-    }
+    }        
 }
+
