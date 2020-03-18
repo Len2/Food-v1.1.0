@@ -17,10 +17,9 @@ class CreatePagesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description');
-            $table->string('workingTime');
-            $table->string('phoneNumber');
+            $table->string('work_time');
+            $table->string('phone_number');
             $table->integer('address_id')->unsigned();
-            //$table->foreign('address_id')->references('id')->on('addresses');
             $table->timestamps();
         });
     }

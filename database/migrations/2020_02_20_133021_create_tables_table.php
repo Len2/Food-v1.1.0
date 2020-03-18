@@ -15,12 +15,11 @@ class CreateTablesTable extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('number');
+            $table->unsignedBigInteger('page_id');
+            $table->integer('table_number');
             $table->integer('nr_chairs')->nullable();
             $table->string('status');
             $table->string('type_of_table');
-            $table->integer('page_id')->unsigned();
-            //$table->foreign('pages_id')->references('id')->on('pages');
             $table->timestamps();
         });
     }

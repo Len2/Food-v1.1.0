@@ -2,120 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Album\CreateAlbumRequest;
+use App\Http\Requests\Album\UpdateAlbumRequest;
+use App\Http\Resources\AlbumResource;
 use Illuminate\Http\Request;
 use App\Album;
 
 class AlbumController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $albums = Album::get();
-        if(is_null($albums))
-        {
-            return response()->json("Not found",404);
-        }
-        return response()->json($albums,200);
+        return AlbumResource::collection(Album::paginate());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function store(CreateAlbumRequest $request)
     {
-        //
+        $album = Album::create($request->all());
+        return new AlbumResource($album);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function show(Album $album)
     {
-        $albums = $request->validate([
-            'name'=>'required|string|unique:albums'
+        return new AlbumResource($album);
+    }
+
+
+    public function update(UpdateAlbumRequest $request, Album $album)
+    {
+        $data = $request->only([
+            'name'
         ]);
 
-        $albums = Album::create($request->all());
-
-        if(is_null($albums)){
-            return response()->json("The Album failed to be builded",404);
-        }
-        return response()->json($albums, 200);
-
+        $album->update($data);
+        return new AlbumResource($album);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $album = Album::find($id);
-        if(is_null($album)){
-            return reponse()->json();
-        }
-        return response()->json($album,201);
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function destroy(Album $album)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $albums = Album::find($id);
-        $validate = $request->validate([
-            'name'=>'string|unique:albums'
-        ]);
-        
-        if(is_null($albums))
-        {
-            return response()->json("Album ".$id.", not found");
-        }
-
-        $albums->update($request->all());
-        return response()->json($albums,200);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $albums = Album::find($id);
-        if(is_null($Album))
-        {
-            return response()->json("Album ".$id."not found", 404);
-        }
-        $albums->delete();
-        return response()->json(null,200);
+        $album->delete();
+        return new AlbumResource($album);
     }
 }

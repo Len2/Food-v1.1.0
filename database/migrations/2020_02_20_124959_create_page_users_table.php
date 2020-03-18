@@ -15,12 +15,9 @@ class CreatePageUsersTable extends Migration
     {
         Schema::create('page_users', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_role_id');
-            $table->integer('page_role_id');
-            $table->integer('page_id');
-            //$table->foreign('user_role_id')->references('id')->on('UserRole')->onDelete('cascade');
-            //$table->foreign('page_role_id')->references('id')->on('PageRole')->onDelete('cascade');
-            //$table->foreign('page_id')->references('id')->on('Page')->onDelete('cascade');
+            $table->unsignedBigInteger('user_role_id');
+            $table->unsignedBigInteger('page_role_id');
+            $table->unsignedBigInteger('page_id');
             $table->timestamps();
         });
     }

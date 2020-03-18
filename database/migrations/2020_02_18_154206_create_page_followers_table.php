@@ -15,11 +15,8 @@ class CreatePageFollowersTable extends Migration
     {
         Schema::create('page_followers', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('page_id');
-            $table->integer('user_id');
-            //$table->foreign('page_id')->references('id')->on('page')->onDelete('cascade');
-            //$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
+            $table->unsignedBigInteger('page_id');
+            $table->unsignedBigInteger('user_id');
         });
     }
 

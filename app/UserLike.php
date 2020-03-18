@@ -7,23 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class UserLike extends Model
 {
     protected $table = 'user_likes';
-    protected $fillable =
-    [
-        'role_user_id',
-        'product_id',
-    ];
-
-    protected $guarded = ['id'];
     public $timestamps = false;
-    
-    public function userRoles()
+    protected $guarded = [];
+
+    public function userRole()
     {
-        return $this->belongsTo('App\UserRole');
+        return $this->belongsTo(UserRole::class);
     }
 
     public function product()
     {
-        return $this->belongsTo('App\Product');
+        return $this->belongsTo(Product::class);
     }
 }
-//KA JE ARDIT, JE HUP KREJT

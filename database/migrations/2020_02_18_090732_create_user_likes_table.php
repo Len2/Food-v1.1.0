@@ -15,11 +15,8 @@ class CreateUserLikesTable extends Migration
     {
         Schema::create('user_likes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('role_user_id')->unsigned();
-            $table->integer('product_id')->unsigned();
-            //$table->foreign('user_role_id')->references('id')->on('user_role')->onDelete('cascade');
-            //$table->foreign('product_id')->references('id')->on('product')->onDelete('cascade');
-            $table->timestamps();
+            $table->unsignedBigInteger('user_role_id');
+            $table->unsignedBigInteger('product_id');
         });
     }
 

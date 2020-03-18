@@ -6,15 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Offer extends Model
 {
-    public $timestamps=false;
-    protected $fillable=
-    [
-        'product_id',
-        'page_id',
-        'price',
-        'description',
-        'status',
-    ];
+    protected $guarded = [];
 
     public function product()
     {

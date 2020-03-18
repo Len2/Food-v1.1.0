@@ -6,7 +6,9 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 use Response;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+//use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+//use Tymon\JWTAuth\Exceptions\JWTException;
+//use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class Handler extends ExceptionHandler
 {
@@ -16,7 +18,6 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
     ];
 
     /**
@@ -53,17 +54,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-//        if ($request->expectsJson()) {
-//            return response()->json(['error' => 'Unauthenticated.'], 401);
-//        }
-
-
-        if ( $exception instanceof TokenExpiredException) {
-            return Response::json(['error' => 'Token Expired'], $exception->getStatusCode());
-        } else if ($exception instanceof TokenInvalidException) {
-            return Response::json(['error' => 'Token Invalid'], $exception->getStatusCode());
-        } else if ($exception instanceof JWTException) {
-            return Response::json(['error' => 'Error fetching Token'], $exception->getStatusCode());
+        if($exception instanceof \Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException){
+            return response()->json(["error" => $exception->getMessage()], $exception->getStatusCode());
         }
         return parent::render($request, $exception);
     }

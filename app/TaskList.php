@@ -6,18 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskList extends Model
 {
-    public $timestamps=false;
-    protected $fillable=
-    [
-        'name',
-        'page_id',
-    ];
+    public $timestamps = false;
+    protected $guarded = [];
 
-    public function task(){
-    	return $this->hasMany('App\Task');
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
     }
 
-    public function page(){
-    	return $this->belongsTo('App\Page');
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }

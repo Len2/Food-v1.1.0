@@ -2,120 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskList\CreateTaskListRequest;
+use App\Http\Requests\TaskList\UpdateTaskListRequest;
+use App\Http\Resources\TaskListResource;
 use Illuminate\Http\Request;
 use App\TaskList;
 
 class TaskListController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $tasklists = TaskList::get();
-        if(is_null($tasklists)){
-          return response()->json(["Error"=>"No Tasks"],404);
-        }
-        return response()->json(["data" => $tasklists],200);
+        return TaskListResource::collection(TaskList::paginate());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function store(CreateTaskListRequest $request)
     {
-        //
+        $tasklist = TaskList::create($request->all());
+        return new TaskListResource($tasklist);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $validate = $request->validate(
-        [
-            'name'=>'required|string',
-            'page_id'=>'required|regex:/^[0-9]+$/'
-        //'page_id'=>'required|regex:/^[0-9]+$/|exists:pages,id'
-        ]);
 
-        $tasklists = TaskList::create($request->all());
-        return response()->json(["data" => $tasklists],201);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $tasklists = TaskList::find($id);
-         if(is_null($tasklists)){
-            return response()->json(["Error"=>" not found"],404);
-        }
-        return response()->json(["data" => $tasklists],200);
+        $tasklist = TaskList::findOrFail($id);
+        return new TaskListResource($tasklist);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(UpdateTaskListRequest $request, $id)
     {
-        $tasklists = TaskList::find($id);
+        $tasklist = TaskList::findOrFail($id);
 
-        $validate = $request->validate(
-        [
-            'name'=>'string',
-            'page_id'=>'regex:/^[0-9]+$/'
-            //'page_id'=>'exists:pages,id|regex:/^[0-9]+$/'
+        $data = $request->only([
+            'name', 'page_id'
         ]);
 
-        if(is_null($tasklists)){
-             return response()->json(["Error"=>" not found"],404);
-        }
-
-        $tasklists->update($request->all());
-        return response()->json(["data" => $tasklists],200);
+        $tasklist->update($data);
+        return new TaskListResource($tasklist);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        $tasklists=TaskList::find($id);
-        if(is_null($tasklists)){
-             return response()->json(["Error"=>" not found"],404);
-        }
-        
-        $tasklists->delete();
-        return response()->json(null,200);
+        $tasklist = TaskList::findOrFail($id);
+        $tasklist->delete();
+
+        return new TaskListResource($tasklist);
     }
 }

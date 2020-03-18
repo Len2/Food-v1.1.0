@@ -6,27 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    public $timestamps=false;
-    protected $fillable=
-    [
-        'user_id',
-        'table_id',
-        'page_id',
-        'date',
-        'status',
-        'type',
-        'current_location_id',
-        'delivery_location_id',
-    ];
+    protected $guarded = [];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function table()
-    {
-        return $this->belongsTo(Table::class);
     }
 
     public function page()
@@ -34,9 +23,18 @@ class Order extends Model
         return $this->belongsTo(Page::class);
     }
 
+    public function table()
+    {
+        return $this->belongsTo(Table::class);
+    }
+
     public function address()
     {
         return $this->belongsTo(Address::class);
     }
 
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }

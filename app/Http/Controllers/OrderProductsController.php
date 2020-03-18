@@ -2,138 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\OrderProduct\CreateOrderProductRequest;
+use App\Http\Requests\OrderProduct\UpdateOrderProductRequest;
+use App\Http\Resources\OrderProductResource;
 use App\OrderProducts;
-use Illuminate\Validation\Rule;
-use Validator;
 
 class OrderProductsController extends Controller
 {
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-          $orderProducts= OrderProducts::get();
-          if(is_null($orderProducts)){
-            return response()->json("No products in orders",404);
-        }
-        return response()->json($orderProducts,200);
+        return OrderProductResource::collection(OrderProducts::paginate());
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(CreateOrderProductRequest $request)
     {
-        //
+        $orderProduct = OrderProducts::create($request->all());
+        return new OrderProductResource($orderProduct);
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $validator=Validator::make($request->all(),
-        [
-           'orders_id' => 'required',
-           'product_id' => 'required',
-           'quantity' => 'regex:/^[0-9]+$/',
-           'total' => 'regex:/^\d+(\.\d{2})?$/',
-        ]);
-
-        if($validator->fails()){
-            $response=array('response'=>$validator->messages(),'success'=>false);
-            return $response;
-        } else {
-            $orderProducts=OrderProducts::create($request->all());
-            return response()->json($orderProducts,201);
-        }
-}
-       
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $orderProducts=OrderProducts::find($id);
-        if(is_null($orderProducts)){
-            return response()->json("Not found",404);
-        }
-        return response()->json($orderProducts,200);
+        $orderProduct = OrderProducts::findOrFail($id);
+        return new OrderProductResource($orderProduct);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(UpdateOrderProductRequest $request, $id)
     {
-        $orderProducts=OrderProducts::find($id);
-        $validator = Validator::make($request->all(), [
-            'orders_id' => 'required|exists:orders,id',
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'regex:/^[0-9]+$/',
-            'total' => 'regex:/^\d+(\.\d{2})?$/',
+        $orderProduct = OrderProducts::findOrFail($id);
+        $data = $request->only([
+            'order_id', 'product_id', 'quantity', 'total',
         ]);
-        if(is_null($orderProducts)){
-             return response()->json("Not found",404);
-        }
 
-        if($validator->fails()){
-            $response=array('response'=>$validator->messages(),'success'=>false);
-            return $response;
-        } else{
-            $orderProducts->update($request->all());
-            return response()->json($orderProducts,200);
-        }
+        $orderProduct->update($data);
+        return new OrderProductResource($data);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
-        $orderProducts=OrderProducts::find($id);
+        $orderProduct = OrderProducts::findOrFail($id);
+        $orderProduct->delete();
 
-        if(is_null($orderProducts)){
-             return response()->json("Not found",404);
-        }
-
-        $orderProducts->delete();
-        return response()->json(null,200);    
+        return new OrderProductResource($orderProduct);
     }
-
-
-
 }

@@ -6,29 +6,40 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    public $timestamps=false;
-    protected $fillable=[
-    	'name',
-    	'description',
-        'price',
-    	'category_id',
-        'page_id',
-        'image'
-    ];
-    
-    public function pageCategory(){
-    	return $this->belongsTo('App\PageCategory');
+    protected $guarded = [];
+
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProducts::class);
     }
 
-        public function page(){
-        return $this->belongsTo('App\Page');
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
-    public function orderProducts(){
-    	return $this->hasMany('App\OrderProducts');
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class);
     }
-    
-    public function offer(){
-        return $this->hasMany('App\Offer');
+
+    public function offers()
+    {
+        return $this->hasMany(Offer::class);
+    }
+
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
+    }
+
+    public function pageCategory()
+    {
+        return $this->belongsTo(PageCategory::class);
+    }
+
+    public function userLikes()
+    {
+        return $this->hasMany(UserLike::class);
     }
 }

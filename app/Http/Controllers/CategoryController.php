@@ -2,133 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Category\CreateCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 use App\Category;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $categories=Category::get();
-        if(is_null($categories)){
-          return response()->json("No categories registered",404);
+        return CategoryResource::collection(Category::paginate());
+    }
+
+
+    public function store(CreateCategoryRequest $request)
+    {
+        if ($request->hasFile('image')) {
+            $imageName = $request->image->getClientOriginalName();
+
+            $category = new Category();
+            $category->name = $request->name;
+            $category->image = $imageName;
+            $category->save();
+        } else {
+            return response()->json("The category-image failed to be stored", 404);
         }
-        return response()->json($categories,200);
+
+        return new CategoryResource($category);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function show(Category $category)
     {
-        //
+        return new CategoryResource($category);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validator = $request->validate([
-            'name'=>'required|unique:categories',
-            'image'=>'required| mimes:jpeg,jpg,png '
+        $data = $request->only([
+            'name', 'image'
         ]);
 
-        if($request->hasFile('image'))
-        {
-            $fileNameExt = $request->file('image')->getClientOriginalName();
-            $fileName = pathinfo($fileNameExt, PATHINFO_FILENAME);
-            $fileExt = $request->file('image')->getClientOriginalExtension();
-            $fileNameToStore = $fileName.'_'.time().'.'.$fileExt;
-            $pathToStore = $request->file('image')->storeAs('public/images',$fileNameToStore);
-
-            $categories = new Category;
-            if($request->hasFile('image')){
-                $categories->name=$request->input('name');
-                $categories->image = $fileNameToStore;
-            }
-            $categories->save();
-            return response()->json($categories,200);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $categories = Category::find($id);
-         if(is_null($categories)){
-            return response()->json("Not found",404);
-        }
-        return response()->json($categories,200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $categories = Category::find($id);
-        $validate = $request->validate(
-            [
-            'name' => 'string',
-            'image' => 'image',
-            ]
-        );
-        if($request->hasFile('image'))
-        {
+        if ($request->hasFile('image')) {
             $imageName = $request->image->getClientOriginalName();
-            $categories->name = $request->name;
-            $categories->image = $imageName;
-            $categories->update();
-        } else {
-            return response()->json(["Error"=>"The Category".$id.", failed to be builded"],404);
+
+            $category = new Category();
+            $category->name = $request->name;
+            $category->image = $imageName;
+            $category->update();
         }
-        return response()->json($categories,200);
+
+        $category->update($data);
+
+        return new CategoryResource($category);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function destroy(Category $category)
     {
-        $categories=Category::find($id);
-        if(is_null($categories)){
-            return response()->json("Not found",404);
-        }
-        $categories->delete();
-        return response()->json(null,204);
+        $category->delete();
+        return new CategoryResource($category);
     }
 }

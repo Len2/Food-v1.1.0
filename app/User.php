@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
+
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
@@ -20,7 +21,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $table = 'users';
     protected $fillable = [
-        'firstName', 'lastName', 'email', 'password','address_id',
+        'firstName', 'lastName', 'email', 'password',
     ];
 
     /**
@@ -44,10 +45,15 @@ class User extends Authenticatable implements JWTSubject
     // Relationships with User Table
 
 
-    public function role()
-    {
-        return $this->belongsToMany(Role::class, 'role_user');
+    public function address(){
+        return $this->hasOne('App\Address');
     }
+
+
+//    public function role()
+//    {
+//        return $this->belongsToMany(Role::class, 'role_user');
+//    }
 
     /*              Lendrit
     public function userRoles(){

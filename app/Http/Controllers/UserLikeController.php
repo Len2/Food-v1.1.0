@@ -2,117 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserLike\CreateUserLikeRequest;
+use App\Http\Requests\UserLike\UpdateUserLikeRequest;
+use App\Http\Resources\UserLikeResource;
 use Illuminate\Http\Request;
 use App\UserLike;
 
 class UserLikeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $userLike = UserLike::get();
-        if(is_null($userLike)){
-            return response()->json(["data" => "No User Like"],404);
-        }
-        return response()->json(["data" => $userLike],200);
+        return UserLikeResource::collection(UserLike::paginate());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-       
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CreateUserLikeRequest $request)
     {
-        $request->validate([
-            'role_user_id' => 'required',
-            'product_id' => 'required',
-        ]);
- 
         $userLike = UserLike::create($request->all());
-        return response()->json(['data' => $userLike],200);
-        
+        return new UserLikeResource($userLike);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        $userLike = UserLike::find($id);
-        if(is_null($userLike)){
-            return response()->json(["Error" => "Specified User Like ".$id.",not founded"],404);
-        }
-        return response()->json(['data' => $userLike],200);
+        $userLike = UserLike::findOrFail($id);
+        return new UserLikeResource($userLike);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function update(UpdateUserLikeRequest $request, $id)
     {
-        //
+        $userLike = UserLike::findOrFail($id);
+        $data = $request->only([
+            'role_user_id', 'product_id',
+        ]);
+
+        $userLike->update($data);
+        return new UserLikeResource($userLike);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $userLike=UserLike::find($id);
-        $validator = $request->validate([
-            //'role_user_id' => 'exists:users,id|regex:/^[0-9]+$/',
-            //'product_id' => 'exists:role,id|regex:/^[0-9]+$/',
-            'role_user_id' => 'regex:/^[0-9]+$/',
-            'product_id' => 'regex:/^[0-9]+$/',
-            ]);
 
-        if(is_null($userLike)){
-            return response()->json(["Error" => "User Like, not found"],404);
-        } else {
-            $userLike->update($request->all());
-            return response()->json(['data' => $userLike],200);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        $userLike=UserLike::find($id);
-        if(is_null($userLike)){
-             return response()->json(["Error" => "User Like, not found"],404);
-        }
+        $userLike = UserLike::findOrFail($id);
         $userLike->delete();
-        return response()->json(null,200); 
+
+        return new UserLikeResource($userLike);
     }
 }
