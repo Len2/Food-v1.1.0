@@ -15,12 +15,9 @@ class CreatePageCategoriesTable extends Migration
     {
         Schema::create('page_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('page_id')->unsigned();
-            $table->integer('category_id')->unsigned();
-            $table->string('displayName');
-            //$table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            //$table->foreign('pages_id')->references('id')->on('pages')->onDelete('cascade');
-            $table->timestamps();
+            $table->unsignedBigInteger('page_id');
+            $table->unsignedBigInteger('category_id');
+            $table->string('display_name');
         });
     }
 

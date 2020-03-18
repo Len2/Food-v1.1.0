@@ -9,17 +9,12 @@ use Spatie\Permission\Traits\HasRoles;
 class Task extends Model
 {
     use HasRoles;
-    public $timestamps=false;
-    protected $fillable=
-    [
-        'task_list_id',
-        'status',
-        'description',
-        'start_date',
-        'end_date',
-        'notify_email',
-        'attachment',
-    ];
+    protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function taskList()
     {

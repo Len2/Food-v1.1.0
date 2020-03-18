@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Task\CreateTaskRequest;
+use App\Http\Requests\Task\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
 use Illuminate\Http\Request;
 use App\Task;
 use Illuminate\Support\Facades\Auth;
@@ -11,161 +14,62 @@ use Illuminate\Auth\Access\Response;
 use  JWTAuth;
 use  App\User;
 
-
-
-
+use Illuminate\Auth\Access\AuthorizationException;
 
 
 class TaskController extends Controller
 {
 
-    function __construct()
-    {
-         $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:user-create', ['only' => ['create','store']]);
-         $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
-    }
+//    function __construct()
+//    {
+//         $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index','show']]);
+//         $this->middleware('permission:user-create', ['only' => ['create','store']]);
+//         $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
+//         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+//    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
-//        if(! $user= JWTAuth::parseToken()->authenticate()){
-//            return response()->json(['meassage'=>'User not found'],404);
-//        }
-
-
-        if (! Gate::allows('user-list')) {
-//            return abort(401);
-            return "not allowed";
-         //   return "Test";
+        if (! Gate::allows('user-create')) {
+            throw new AuthorizationException('You have not permission');
         }
-
-        return Auth::user();
-
-//        $user=Auth::user();
-//        return $user;
-
-//        echo "Test";
-
-        //echo "ttttt";
-     //  return auth()->user()->hasAnyPermission('user-list');
-
-      //  echo "Test";
-
-
-//        $task = Task::get();
-//        if(is_null($task)){
-//          return response()->json(["Error"=>"Task, not found"],404);
-//        }
-//        return response()->json(["data" => $task],200);
+        return TaskResource::collection(Task::get());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function store(CreateTaskRequest $request)
     {
-        //
+        $task = Task::create( request()->except(['token']));
+        return new TaskResource($task);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function show(Task $task)
     {
-        $request->validate([
-            'task_list_id'      =>  'required',
-            'status'            =>  'required',
-            'description'       =>  'required',
-            'start_date'        =>  'required',
-            'end_date'          =>  'required',
-            'notify_email'      =>  'required',
-            'attachment'        =>  'required'
-        ]);
-    
-        $task = Task::create($request->all());
-        return response()->json(["data" => $task],201);
+        return new TaskResource($task);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $task = Task::find($id);
-        if(is_null($task)){
-           return response()->json(["Error"=>"Task, not found"],404);
-       }
-       return response()->json(["data" => $task],200);
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $task = Task::find($id);
-
-        $validate = $request->validate(
-        [
-            'task_list_id'      =>  'regex:/^[0-9]+$/',
-            'status'            =>  'string',
-            'description'       =>  'string',
-            'start_date'        =>  'string',
-            'end_date'          =>  'string',
-            'notify_email'      =>  'string',
-            'attachment'        =>  'string',
+        $data = $request->only([
+            'task_list_id', 'status', 'description', 'start_date', 'end_date', 'notify_email', 'attachment',
         ]);
 
-        if(is_null($task)){
-             return response()->json(["Error"=>" not found"],404);
-        }
-
-        $task->update($request->all());
-        return response()->json(["data" => $task],200);
+        $task->update($data);
+        return new TaskResource($data);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function destroy(Task $task)
     {
-        $task=Task::find($id);
-        if(is_null($task)){
-             return response()->json(["Error"=>" not found"],404);
-        }
-        
         $task->delete();
-        return response()->json(null,200);
+        return new TaskResource($task);
     }
 }

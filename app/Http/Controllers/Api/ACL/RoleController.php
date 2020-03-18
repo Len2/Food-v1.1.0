@@ -21,7 +21,7 @@ class RoleController extends Controller
     public function index()
     {
         if (! Gate::allows('role-list')) {
-            return "not allowed";
+            throw new AuthorizationException('You have not permission for show roles');
         }
 
         $roles = Role::get();
@@ -51,7 +51,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         if (! Gate::allows('role-create')) {
-            return "not allowed";
+            throw new AuthorizationException('You have not permission for add role');
         }
         $request->validate([
             'name'      =>  'required',
@@ -94,7 +94,7 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         if (! Gate::allows('role-edit')) {
-            return "not allowed";
+            throw new AuthorizationException('You have not permission for update role');
         }
         $role = Role::find($id);
         $request->validate(
@@ -124,7 +124,7 @@ class RoleController extends Controller
     public function destroy($id)
     {
         if (! Gate::allows('role-delete')) {
-            return "not allowed";
+            throw new AuthorizationException('You have not permission for delete role');
         }
         $role = Role::find($id);
         $role->delete();

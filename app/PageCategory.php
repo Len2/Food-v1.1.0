@@ -6,20 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class PageCategory extends Model
 {
+    protected $table = 'page_categories';
+    public $timestamps = false;
+    protected $guarded = [];
 
-	protected $table = 'page_categories';
-    protected $fillable=
-    [
-     'page_id',
-     'category_id',
-     'displayName',
-    ]; 
-
-    public function category(){
-      return $this->belongsTo('App\Category');
-    }
-
-    public function page(){
-      return $this->belongsTo('App\Page');
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

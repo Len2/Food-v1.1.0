@@ -7,28 +7,25 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     protected $table = 'invoices';
-    protected $fillable = 
-        ['user_id',
-        'order_product_id',
-        'page_id',
-        'total',
-        'description',
-        'date',
-        'status',
-        'payment_method'];
+    protected $guarded = [];
 
-    protected $guarded = ['id'];
-    public $timestamps = false;
-
-    public function user(){
-        return $this->belongsTo('App\User');
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 
-    public function orderProducts(){
-        return $this->belongsTo('App\OrderProducts');
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
-    public function page(){
-        return $this->belongsTo('App\Page');
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
+    }
+
+    public function orderProduct()
+    {
+        return $this->belongsTo(OrderProduct::class);
     }
 }

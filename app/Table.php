@@ -6,24 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Table extends Model
 {
-    public $timestamps=false;
-    protected $fillable=[
-        'number',
-        'nr_chairs',
-        'status',
-        'type_of_table',
-        'page_id'
-    ];
-    public function order(){
+    protected $guarded = [];
 
-    	return $this->hasMany('App\Order');
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
-    public function reservation(){
-    	return $this->hasMany('App\Reservation');
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 
-    public function page(){
-    	return $this->belongsTo('App\Page');
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
     }
 }

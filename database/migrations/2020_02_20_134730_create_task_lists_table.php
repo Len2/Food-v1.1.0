@@ -15,10 +15,8 @@ class CreateTaskListsTable extends Migration
     {
         Schema::create('task_lists', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedBigInteger('page_id');
             $table->string('name');
-            $table->integer('page_id')->unsigned();
-            //$table->foreign('pages_id')->references('id')->on('pages');
-            $table->timestamps();
         });
     }
 

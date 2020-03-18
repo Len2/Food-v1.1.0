@@ -12,7 +12,7 @@ use  Hash;
 use Spatie\Permission\Models\Role;
 
 use DB;
-
+use Illuminate\Auth\Access\AuthorizationException;
 class UserController extends Controller
 {
     /**
@@ -23,7 +23,7 @@ class UserController extends Controller
     public function index()
     {
         if (! Gate::allows('user-list')) {
-            return "not allowed";
+            throw new AuthorizationException('You have not permission for show users');
         }
         $users = User::get();
         if(is_null($users)){
@@ -51,7 +51,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         if (! Gate::allows('user-create')) {
-            return "not allowed";
+            throw new AuthorizationException('You have not permission for add user');
         }
         $this->validate($request, [
             'firstName' => 'required',
@@ -106,7 +106,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         if (! Gate::allows('user-edit')) {
-            return "not allowed";
+            throw new AuthorizationException('You have not permission for update user');
         }
         $this->validate($request, [
             'firstName' => 'required',
@@ -141,7 +141,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         if (! Gate::allows('user-delete')) {
-            return "not allowed";
+            throw new AuthorizationException('You have not permission for delete user');
         }
         User::find($id)->delete();
         return response()->json(null,200);

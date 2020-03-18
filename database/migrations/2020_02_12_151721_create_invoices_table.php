@@ -15,17 +15,14 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('order_product_id')->unsigned();
-            $table->integer('restaurant_id')->unsigned();
-            $table->double('total')->unsigned();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('order_product_id');
+            $table->unsignedBigInteger('page_id');
+            $table->double('total');
             $table->string('description');
             $table->date('date');
             $table->string('status');
             $table->string('payment_method');
-            //$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            //$table->foreign('order_product_id')->references('id')->on('orders_products')->onDelete('cascade');
-            // $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
             $table->timestamps();
         });
     }

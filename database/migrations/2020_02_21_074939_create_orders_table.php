@@ -18,11 +18,11 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('page_id');
             $table->unsignedBigInteger('table_id')->nullable();
-            $table->string('date');
+            $table->date('date');
             $table->string('status');
             $table->string('type');
-            $table->unsignedBigInteger('current_location_id');
-            $table->unsignedBigInteger('delivery_location_id');
+            $table->unsignedBigInteger('current_address_id');
+            $table->unsignedBigInteger('delivery_address_id');
             $table->timestamps();
         });
     }
