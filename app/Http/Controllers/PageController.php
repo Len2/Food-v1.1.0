@@ -44,6 +44,7 @@ class PageController extends Controller
     public function destroy(Page $page)
     {
         $page->delete();
-        return new PageResource($page);
-    }
+        return response()->json(null,200);
+    }        
 }
+
