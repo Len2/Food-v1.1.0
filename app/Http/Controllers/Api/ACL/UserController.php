@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Api\ACL;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Gate;
-
 use  Hash;
 use Spatie\Permission\Models\Role;
-
 use DB;
 use Illuminate\Auth\Access\AuthorizationException;
 class UserController extends Controller
@@ -145,5 +142,27 @@ class UserController extends Controller
         }
         User::find($id)->delete();
         return response()->json(null,200);
+    }
+
+
+//    public function getIDPageOwner(){
+//        $admins = User::role('page-owner')->get();
+//        return $admins;
+//    }
+//Extra methods
+    public function registerPageOwner(Request $request){
+        $this->validate($request, [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|same:confirm-password',
+            //'roles' => 'required'
+        ]);
+        $input = $request->all();
+        $input['password'] = Hash::make($input['password']);
+
+        $user = User::create($input);
+        $user->assignRole('page-owner');
+        return response()->json(["data" => $user],201);
     }
 }

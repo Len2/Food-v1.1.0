@@ -25,6 +25,14 @@ Route::post('/signin',[
     'uses' => 'Api\ACL\LoginController@signin'
 ]);
 
+//Route::get('/pageOwnerRegister',[
+//    'uses' => 'Api\ACL\UserController@getIDPageOwner'
+//]);
+
+Route::post('/registerPageOwner',[
+    'uses' => 'Api\ACL\UserController@registerPageOwner'
+]);
+
 
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::apiResource('users','Api\ACL\UserController');

@@ -61,25 +61,25 @@ class User extends Authenticatable implements JWTSubject
     }
     */
 
-    public function reservation(){
-        return $this->hasMany('App\Reservation');
-    }   
-
-    public function order(){
-        return $this->hasMany('App\Order');
-    } 
-
-    public function invoice(){
-        return $this->hasMany('App\Invoice');
-    } 
-    
-    public function pageFollowers(){
-        return $this->hasMany('App\PageFollowers');
-    }  
-    
-    public function galleryImages(){
-        return $this->hasMany('App\GalleryImage');
-    }   
+//    public function reservation(){
+//        return $this->hasMany('App\Reservation');
+//    }
+//
+//    public function order(){
+//        return $this->hasMany('App\Order');
+//    }
+//
+//    public function invoice(){
+//        return $this->hasMany('App\Invoice');
+//    }
+//
+//    public function pageFollowers(){
+//        return $this->hasMany('App\PageFollowers');
+//    }
+//
+//    public function galleryImages(){
+//        return $this->hasMany('App\GalleryImage');
+//    }
 
     // JWT Functions
     public function getJWTIdentifier()
