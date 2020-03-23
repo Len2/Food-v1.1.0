@@ -7,19 +7,36 @@ use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use Illuminate\Http\Request;
 use App\Page;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Exception;
 
 class PageController extends Controller
 {
     public function index()
     {
-        return PageResource::collection(Page::paginate());
+        return PageResource::collection(Page::get());
     }
 
 
     public function store(CreatePageRequest $request)
     {
-        $page = Page::create($request->all());
-        return new PageResource($page);
+        try{
+            $page =new Page;
+            $user = Auth::user();
+
+            $page->avatar = $request->avatar;
+            $page->name =$request->name;
+            $page->url =  Str::slug($request->url);
+            $page->description =$request->description;
+            $page->work_start =$request->work_start;
+            $page->work_end =$request->work_end;
+
+            $user->page()->save($page);
+            return new PageResource($page);
+        }catch(Exception $e){
+            return response()->json(array('error' =>Auth::user()->name."You can add only one restaurant"));
+        }
     }
 
 
