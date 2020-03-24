@@ -181,6 +181,10 @@ return [
         //JWT auth
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
+        // Image intervention
+
+        Intervention\Image\ImageServiceProvider::class
+
 
     ],
 
@@ -236,6 +240,8 @@ return [
 
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+
+        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 

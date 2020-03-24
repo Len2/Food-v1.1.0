@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Page;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CreatePageRequest extends FormRequest
 {
@@ -13,7 +15,12 @@ class CreatePageRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('page-create');
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
     }
 
     /**
@@ -24,11 +31,12 @@ class CreatePageRequest extends FormRequest
     public function rules()
     {
         return [
+            'avatar' =>'required',
             'name' => 'required',
+            'url' => 'required|unique:pages',
             'description' => 'required',
-            'work_time' => 'required',
-            'phone_number' => 'required|min:6',
-            'address_id' => 'required|regex:/^[0-9,-]*$/'
+            'work_start' => 'required',
+            'work_end' => 'required',
         ];
     }
 }

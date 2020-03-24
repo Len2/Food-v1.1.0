@@ -77,9 +77,13 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 //
 //    Route::apiResource('offers', 'OfferController');
 
-    Route::apiResource('pages','PageController');
+    Route::apiResource('pages','PageController',['except' => ['update']]);
 
-    Route::apiResource('tasks','TaskController');
+    Route::post('/pages/{page}',[
+        'uses' => 'PageController@update'
+    ]);
+
+   // Route::apiResource('tasks','TaskController');
 
     /*Route::group(['middleware' => ['role:Admin']], function () {
     });*/
