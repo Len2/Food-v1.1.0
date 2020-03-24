@@ -8,10 +8,10 @@ class Page extends Model
 {
     protected $guarded = [];
 
-//    public function users()
-//    {
-//        return $this->belongsToMany(User::class);
-//    }
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 
 
 //    public function products()
