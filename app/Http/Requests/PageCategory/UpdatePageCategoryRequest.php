@@ -26,7 +26,7 @@ class UpdatePageCategoryRequest extends FormRequest
         return [
             'page_id' => 'regex:/^[0-9]+$/',
             'category_id' => 'regex:/^[0-9]+$/',
-            'displayName' => 'string'
+            'display_name' => 'string'
         ];
     }
 }

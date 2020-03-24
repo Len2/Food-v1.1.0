@@ -26,8 +26,8 @@ class CreatePageRequest extends FormRequest
         return [
             'name' => 'required',
             'description' => 'required',
-            'workingTime' => 'required|',
-            'phoneNumber' => 'required|min:6',
+            'work_time' => 'required',
+            'phone_number' => 'required|min:6',
             'address_id' => 'required|regex:/^[0-9,-]*$/'
         ];
     }

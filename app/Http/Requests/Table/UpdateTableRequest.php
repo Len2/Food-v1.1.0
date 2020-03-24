@@ -24,7 +24,7 @@ class UpdateTableRequest extends FormRequest
     public function rules()
     {
         return [
-            'number' => 'regex:/^[0-9]+$/',
+            'table_number' => 'regex:/^[0-9]+$/',
             'nr_chairs' => 'regex:/^[0-9]+$/',
             'status' => 'in:available,busy',
             'type_of_table' => 'in:food,drink',

@@ -28,7 +28,7 @@ class UpdateAddressRequest extends FormRequest
             'latitude' => 'regex:/^[0-9]+$/',
             'city' => '',
             'street' => '',
-            'zipcode' => 'regex:/^[0-9]+$/'
+            'zip_code' => 'regex:/^[0-9]+$/'
         ];
     }
 }

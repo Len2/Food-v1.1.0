@@ -32,7 +32,7 @@ class PageController extends Controller
     public function update(UpdatePageRequest $request, Page $page)
     {
         $data = $request->only([
-            'name', 'description', 'workingTime', 'phoneNumber', 'address_id'
+            'name', 'description', 'work_time', 'phone_number', 'address_id'
         ]);
 
         $page->update($data);
@@ -45,6 +45,6 @@ class PageController extends Controller
     {
         $page->delete();
         return response()->json(null,200);
-    }        
+    }
 }
 

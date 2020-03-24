@@ -26,8 +26,8 @@ class UpdatePageRequest extends FormRequest
         return [
             'name' => 'string',
             'description' => 'string',
-            'workingTime' => 'string',
-            'phoneNumber' => 'string|min:6',
+            'work_time' => 'string',
+            'phone_number' => 'string|min:6',
             'address_id' => 'regex:/^[0-9]+$/'
         ];
     }

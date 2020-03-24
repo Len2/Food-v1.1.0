@@ -26,7 +26,7 @@ class CreatePageCategoryRequest extends FormRequest
         return [
             'page_id' => 'required|regex:/^[0-9]+$/',
             'category_id' => 'required|regex:/^[0-9]+$/',
-            'displayName' => 'required|string'
+            'display_name' => 'required|string'
         ];
     }
 }

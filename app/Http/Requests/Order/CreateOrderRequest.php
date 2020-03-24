@@ -30,8 +30,8 @@ class CreateOrderRequest extends FormRequest
             'date'                  => 'required|date',
             'status'                => 'required',
             'type'                  => 'required',
-            'current_location_id'   => 'required|regex:/^[0-9]+$/',
-            'delivery_location_id'  => 'required|regex:/^[0-9]+$/',
+            'current_address_id'   => 'required|regex:/^[0-9]+$/',
+            'delivery_address_id'  => 'required|regex:/^[0-9]+$/',
         ];
     }
 }

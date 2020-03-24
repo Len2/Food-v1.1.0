@@ -36,7 +36,7 @@ class PageCategoryController extends Controller
         $pageCategory = PageCategory::findOrFail($id);
 
         $data = $request->only([
-            'page_id', 'category_id', 'displayName'
+            'page_id', 'category_id', 'display_name'
         ]);
 
         $pageCategory->update($data);

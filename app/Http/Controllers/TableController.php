@@ -32,7 +32,7 @@ class TableController extends Controller
     public function update(UpdateTableRequest $request, Table $table)
     {
         $data = $request->only([
-            'number', 'nr_chairs', 'status', 'type_of_table', 'page_id'
+            'table_number', 'nr_chairs', 'status', 'type_of_table', 'page_id'
         ]);
 
         $table->update($data);
