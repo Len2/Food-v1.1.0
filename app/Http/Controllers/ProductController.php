@@ -72,6 +72,7 @@ class ProductController extends Controller
             $filename = time() . '.' . $image->getClientOriginalExtension();
             Image::make($image)->resize(361, 237)->save($this->path.$filename);
             $image->image = $filename;
+            $product->image = $filename;
         }
 
         $product->name =$request->name;
@@ -79,7 +80,7 @@ class ProductController extends Controller
         $product->active =$request->active;
         $product->initial_price =$request->initial_price;
         $product->price =$request->price;
-        $product->image = $filename;
+
 
         $product->save();
         return new ProductResource($product);

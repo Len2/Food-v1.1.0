@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Exception;
 use Image;
+
 class PageController extends Controller
 {
 
@@ -73,9 +74,9 @@ class PageController extends Controller
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
             Image::make($avatar)->resize(361, 237)->save($this->path.$filename);
             $page->avatar = $filename;
+            $page->avatar = $filename;
         }
 
-        $page->avatar = $filename;
         $page->name =$request->name;
         $page->url =  Str::slug($request->url);
         $page->description =$request->description;
@@ -84,6 +85,7 @@ class PageController extends Controller
 
         $this->user->page()->save($page);
         return new PageResource($page);
+       // echo "tt";
     }
 
     public function destroy(Page $page)

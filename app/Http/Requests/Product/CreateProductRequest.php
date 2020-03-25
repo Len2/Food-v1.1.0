@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class CreateProductRequest extends FormRequest
 {

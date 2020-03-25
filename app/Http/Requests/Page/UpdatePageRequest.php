@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Page;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdatePageRequest extends FormRequest
 {
@@ -30,7 +31,7 @@ class UpdatePageRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'url' => 'required|unique:pages',
+            'url' => 'required',
             'description' => 'required',
             'work_start' => 'required',
             'work_end' => 'required',
