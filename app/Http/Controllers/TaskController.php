@@ -27,24 +27,21 @@
 ////         $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
 ////         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
 ////    }
-//    /**
-//     * Display a listing of the resource.
-//     *
-//     * @return \Illuminate\Http\Response
-//     */
-//
 //
 //    public function index()
 //    {
-//        if (! Gate::allows('user-create')) {
-//            throw new AuthorizationException('You have not permission');
+//        if (! Gate::allows('task-list')) {
+//            throw new AuthorizationException('You have no permission to view tasks');
 //        }
-//        return TaskResource::collection(Task::get());
+//        return TaskResource::collection(Task::all());
 //    }
 //
 //
 //    public function store(CreateTaskRequest $request)
 //    {
+//        if (! Gate::allows('user-create')) {
+//            throw new AuthorizationException('You have no permission to create tasks');
+//        }
 //        $task = Task::create( request()->except(['token']));
 //        return new TaskResource($task);
 //    }

@@ -24,7 +24,7 @@ class CreateTableRequest extends FormRequest
     public function rules()
     {
         return [
-            'number'=>'required|regex:/^[0-9]+$/',
+            'table_number'=>'required|regex:/^[0-9]+$/',
             'nr_chairs'=>'regex:/^[0-9]+$/',
             'status'=>'required|in:available,busy',
             'type_of_table'=>'required|in:food,drink',

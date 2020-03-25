@@ -31,7 +31,7 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, Order $order)
     {
         $data = $request->only([
-            'user_id', 'page_id', 'table_id', 'date', 'status', 'type', 'current_location_id', 'delivery_location_id',
+            'user_id', 'page_id', 'table_id', 'date', 'status', 'type', 'current_address_id', 'delivery_address_id',
         ]);
 
         $order->update($data);

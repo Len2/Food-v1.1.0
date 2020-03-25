@@ -30,8 +30,8 @@ class UpdateOrderRequest extends FormRequest
             'date'                  => 'date',
             'status'                => 'string',
             'type'                  => 'string',
-            'current_location_id'   => 'regex:/^[0-9]+$/',
-            'delivery_location_id'  => 'regex:/^[0-9]+$/',
+            'current_address_id'   => 'regex:/^[0-9]+$/',
+            'delivery_address_id'  => 'regex:/^[0-9]+$/',
         ];
     }
 }

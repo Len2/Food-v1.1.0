@@ -6,7 +6,7 @@ use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Page;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
 use Image;
@@ -33,7 +33,6 @@ class ProductController extends Controller
 
     public function store(CreateProductRequest $request)
     {
-
         $page= Page::findOrFail($this->user->page->id);
         $product =new Product;
 
@@ -64,18 +63,25 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $data = $request->only([
-            'name', 'description', 'price', 'category_id', 'page_id',
-        ]);
-
         if ($request->hasFile('image')) {
-            $imageName = $request->image->getClientOriginalName();
-
-            $data['image'] = $imageName;
+            $oldfilename = $product->image;
+            if (\File::exists($this->path.$oldfilename)) {
+                unlink($this->path.$oldfilename);
+            }
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            Image::make($image)->resize(361, 237)->save($this->path.$filename);
+            $image->image = $filename;
         }
 
-        $product->update($data);
+        $product->name =$request->name;
+        $product->description =$request->description;
+        $product->active =$request->active;
+        $product->initial_price =$request->initial_price;
+        $product->price =$request->price;
+        $product->image = $filename;
 
+        $product->save();
         return new ProductResource($product);
     }
 
