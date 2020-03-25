@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Page\CreatePageRequest;
 use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
+use App\User;
 use Illuminate\Http\Request;
 use App\Page;
 use Illuminate\Support\Facades\Auth;
@@ -18,15 +19,15 @@ class PageController extends Controller
     function __construct()
     {
         $this->path = public_path('images/pageLogo/');
+        $this->user = Auth::user();
     }
 
     public function index()
     {
-        $user=Auth::user();
-        if($user->hasRole('Admin')){
+        if($this->user->hasRole('Admin')){
             return PageResource::collection(Page::get());
-        }else if($user->hasRole('page-owner')){
-            $page=$user->page;
+        }else if($this->user->hasRole('page-owner')){
+            $page=$this->user->page;
             return PageResource::collection(array($page));
         }
     }
@@ -35,7 +36,6 @@ class PageController extends Controller
     {
         try{
             $page =new Page;
-            $user = Auth::user();
 
             $avatar = $request->file('avatar');
             $page->name =$request->name;
@@ -45,15 +45,15 @@ class PageController extends Controller
             $page->work_end =$request->work_end;
 
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
-            $path = public_path($this->path.$filename);
+            $path =$this->path.$filename;
             //->resize(468, 249)
             $page->avatar = $filename;
-            $user->page()->save($page);
+            $this->user->page()->save($page);
             Image::make($avatar->getRealPath())->save($path);
 
             return new PageResource($page);
         }catch(Exception $e){
-            return response()->json(array('error' =>Auth::user()->name."You can add only one restaurant"));
+            return response()->json(array('error' =>Auth::user()->name."You can add only one restaurant",'message' => $e));
         }
     }
 
@@ -64,7 +64,6 @@ class PageController extends Controller
 
     public function update(UpdatePageRequest $request, Page $page)
     {
-        $user = Auth::user();
         if ($request->hasFile('avatar')) {
             $oldfilename = $page->avatar;
             if (\File::exists($this->path.$oldfilename)) {
@@ -83,19 +82,22 @@ class PageController extends Controller
         $page->work_start =$request->work_start;
         $page->work_end =$request->work_end;
 
-        $user->page()->save($page);
+        $this->user->page()->save($page);
         return new PageResource($page);
     }
 
     public function destroy(Page $page)
     {
-        $imagePath = $page->avatar;
-        if (\File::exists($this->path.$imagePath)) {
-            unlink($this->path.$imagePath);
+        if($this->user->id == $page->user_id){
+            $this->user->page()->delete();
+            $imagePath = $page->avatar;
+            if (\File::exists($this->path.$imagePath)) {
+                unlink($this->path.$imagePath);
+            }
+            return response()->json(null,200);
+        }else{
+            return response()->json(array("error"=>"you have not permission to access"),401);
         }
-
-        $page->delete();
-        return response()->json(null,200);
     }        
 }
 

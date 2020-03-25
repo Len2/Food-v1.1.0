@@ -13,7 +13,12 @@ class UpdatePageRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('page-create');
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
     }
 
     /**
@@ -24,11 +29,11 @@ class UpdatePageRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string',
-            'description' => 'string',
-            'workingTime' => 'string',
-            'phoneNumber' => 'string|min:6',
-            'address_id' => 'regex:/^[0-9]+$/'
+            'name' => 'required',
+            'url' => 'required|unique:pages',
+            'description' => 'required',
+            'work_start' => 'required',
+            'work_end' => 'required',
         ];
     }
 }

@@ -26,9 +26,10 @@ class CreateProductRequest extends FormRequest
         return [
             'name' => 'required',
             'description' => 'required|string',
-            'price' => 'required|regex:/^\-?[0-9]+(?:\.[0-9]+)?$/',
-            'category_id' => 'required|regex:/^[0-9,-]*$/',
-            'page_id' => 'required|regex:/^[0-9]+$/',
+            'active' =>'required',
+            'initial_price' => 'required',
+            'price' => 'required',
+            //'category_id' => 'required|regex:/^[0-9,-]*$/',
             'image' => 'required|image',
         ];
     }
