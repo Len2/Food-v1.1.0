@@ -26,9 +26,10 @@ class PageController extends Controller
     public function index()
     {
         if($this->user->hasRole('Admin')){
-            return PageResource::collection(Page::get());
+            return PageResource::collection(Page::all());
         }else if($this->user->hasRole('page-owner')){
             $page=$this->user->page;
+
             return PageResource::collection(array($page));
         }
     }
@@ -85,7 +86,6 @@ class PageController extends Controller
 
         $this->user->page()->save($page);
         return new PageResource($page);
-       // echo "tt";
     }
 
     public function destroy(Page $page)

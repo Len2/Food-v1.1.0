@@ -30,7 +30,6 @@ class CreateProductRequest extends FormRequest
             'active' =>'required',
             'initial_price' => 'required',
             'price' => 'required',
-            //'category_id' => 'required|regex:/^[0-9,-]*$/',
             'image' => 'required|image',
         ];
     }

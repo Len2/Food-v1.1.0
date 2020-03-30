@@ -18,6 +18,12 @@ class Page extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function categories() //important
+    {
+        return $this->hasMany(Category::class);
+    }
+
 //
 //    public function tables()
 //    {
@@ -39,10 +45,7 @@ class Page extends Model
 //        return $this->hasMany(Reservation::class);
 //    }
 //
-//    public function categories()
-//    {
-//        return $this->belongsToMany(Category::class);
-//    }
+
 //
 //    public function invoices()
 //    {

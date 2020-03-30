@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'unique:categories',
+            'name' => 'required|min:1|max:255|unique_custom:categories,name,page_id,' . Auth::user()->page->id,
             'image' => 'image'
         ];
     }

@@ -25,7 +25,17 @@ class PermissionTableSeeder extends Seeder
             'page-list',
             'page-create',
             'page-edit',
-            'page-delete'
+            'page-delete',
+
+            'product-list',
+            'product-create',
+            'product-edit',
+            'product-delete',
+
+            'category-list',
+            'category-create',
+            'category-edit',
+            'category-delete'
         ];
 
 

@@ -39,21 +39,20 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::apiResource('roles','Api\ACL\RoleController');
 
-    Route::apiResource('pages','PageController',['except' => ['update']]);
-    Route::post('/pages/{page}',[
-        'uses' => 'PageController@update'
-    ]);
+    Route::apiResource('pages','PageController');  //,['except' => ['update']]
 
-    Route::apiResource('products','ProductController',['except' => ['update']]);
-    Route::post('/products/{product}',[
-        'uses' => 'ProductController@update'
-    ]);
+
+    Route::apiResource('products','ProductController');
+
+    Route::apiResource('category','CategoryController');
+
 
 //    Route::apiResource('address','AddressController');
 //
 //    Route::apiResource('albums','AlbumController');
 //
-//    Route::apiResource('category','CategoryController');
+
+
 //
 //    Route::apiResource('ordertask','OrderTasksController');
 //

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
@@ -23,8 +24,13 @@ class ProductController extends Controller
     public function index()
     {
         if($this->user->hasRole('Admin')){
-            return ProductResource::collection(Product::get());
+            return ProductResource::collection(Product::all());
         }else{
+//            $category = Category::find(1);
+//            $category->products; // will return all products for the category id 1
+//
+//            $product = Product::find(1);
+//            $product->categories; // will return all categories for the product id 1
             $page= Page::findOrFail($this->user->page->id);
             return ProductResource::collection($page->products);
         }
@@ -33,6 +39,9 @@ class ProductController extends Controller
 
     public function store(CreateProductRequest $request)
     {
+        if($request->price >= $request->initial_price){
+            return response()->json(array("error"=>"Initial price must be higher than price"),401);
+        }
         $page= Page::findOrFail($this->user->page->id);
         $product =new Product;
 
@@ -48,7 +57,12 @@ class ProductController extends Controller
         $path = $this->path.$filename;
         //->resize(468, 249)
         $product->image = $filename;
+
+        $categories = Category::find($request->category_ID);
+
+
         $page->products()->save($product);
+        $product->categories()->attach($categories);
         Image::make($image->getRealPath())->save($path);
 
         return new ProductResource($product);
@@ -63,6 +77,9 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, Product $product)
     {
+        if($request->price >= $request->initial_price){
+            return response()->json(array("error"=>"Initial price must be higher than price"),401);
+        }
         if ($request->hasFile('image')) {
             $oldfilename = $product->image;
             if (\File::exists($this->path.$oldfilename)) {
@@ -82,6 +99,8 @@ class ProductController extends Controller
         $product->price =$request->price;
 
 
+        $categories = Category::find($request->category_ID);
+        $product->categories()->sync($categories);
         $product->save();
         return new ProductResource($product);
     }
@@ -91,7 +110,7 @@ class ProductController extends Controller
     {
         if($this->user->page->id == $product->page_id){
             $page= Page::findOrFail($this->user->page->id);
-
+            $product->categories()->detach();
             $page->products()->whereId($product->id)->delete();
             $imagePath = $product->image;
             if (\File::exists($this->path.$imagePath)) {
@@ -101,6 +120,5 @@ class ProductController extends Controller
         }else{
             return response()->json(array("error"=>"you have not permission to access"),401);
         }
-
     }
 }
