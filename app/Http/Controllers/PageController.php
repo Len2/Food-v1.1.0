@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Exception;
 use Image;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class PageController extends Controller
 {
@@ -25,6 +27,10 @@ class PageController extends Controller
 
     public function index()
     {
+        if (! Gate::allows('page-list')) {
+            throw new AuthorizationException('You have not permission');
+        }
+
         if($this->user->hasRole('Admin')){
             return PageResource::collection(Page::all());
         }else if($this->user->hasRole('page-owner')){
@@ -90,6 +96,9 @@ class PageController extends Controller
 
     public function destroy(Page $page)
     {
+        if (! Gate::allows('page-delete')) {
+            throw new AuthorizationException('You have not permission');
+        }
         if($this->user->id == $page->user_id){
             $this->user->page()->delete();
             $imagePath = $page->avatar;

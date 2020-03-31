@@ -4,6 +4,7 @@ namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CreateProductRequest extends FormRequest
 {
@@ -14,14 +15,14 @@ class CreateProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('category-create');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
+    }
+
     public function rules()
     {
         return [

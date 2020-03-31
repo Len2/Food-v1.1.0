@@ -11,6 +11,8 @@ use App\Page;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class ProductController extends Controller
 {
@@ -23,6 +25,10 @@ class ProductController extends Controller
     }
     public function index()
     {
+        if (! Gate::allows('product-list')) {
+            throw new AuthorizationException('You have not permission');
+        }
+
         if($this->user->hasRole('Admin')){
             return ProductResource::collection(Product::all());
         }else{
@@ -108,6 +114,9 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        if (! Gate::allows('product-delete')) {
+            throw new AuthorizationException('You have not permission');
+        }
         if($this->user->page->id == $product->page_id){
             $page= Page::findOrFail($this->user->page->id);
             $product->categories()->detach();

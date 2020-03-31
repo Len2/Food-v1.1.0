@@ -22,6 +22,11 @@ class CategoryController extends Controller
 
     public function index()
     {
+
+        if (! Gate::allows('category-list')) {
+            throw new AuthorizationException('You have not permission');
+        }
+
         return CategoryResource::collection($this->user->page->categories);
     }
 
@@ -77,6 +82,11 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+
+        if (! Gate::allows('category-delete')) {
+            throw new AuthorizationException('You have not permission');
+        }
+
         if($this->user->page->id == $category->page_id){
             $page= $this->user->page;
 
