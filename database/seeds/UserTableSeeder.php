@@ -14,14 +14,15 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::create([
-            'firstName' => 'Admin',
-            'lastName' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('123456'),
-        ]);
+        $user=User::find(1);
+//        $user = User::create([
+//            'firstName' => 'Admin',
+//            'lastName' => 'Admin',
+//            'email' => 'admin@gmail.com',
+//            'password' => bcrypt('123456'),
+//        ]);
 
-        $role = Role::create(['name' => 'Admin']);
+        $role = Role::updateOrCreate(['name' => 'Admin']);
 
         $permissions = Permission::pluck('id','id')->all();
 

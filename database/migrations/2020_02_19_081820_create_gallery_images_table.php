@@ -16,9 +16,9 @@ class CreateGalleryImagesTable extends Migration
         Schema::create('gallery_images', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedBigInteger('page_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('album_id');
-            $table->binary('photo');
+            // $table->unsignedBigInteger('user_id');
+            //$table->unsignedBigInteger('album_id');
+            $table->string('photo');
             $table->timestamps();
         });
     }

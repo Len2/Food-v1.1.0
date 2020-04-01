@@ -10,11 +10,14 @@ class Category extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class);
     }
 
-    public function pages()
+
+
+
+    public function page()
     {
-        return $this->belongsToMany(Page::class);
+        return $this->hasOne(Page::class);
     }
 }

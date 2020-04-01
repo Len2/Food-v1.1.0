@@ -3,28 +3,26 @@
 namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class UpdateCategoryRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        return true;
+        return Gate::allows('category-edit');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
+    }
+
     public function rules()
     {
         return [
-            'name' => 'unique:categories',
+            'name' => 'required|min:1|max:255|unique_custom:categories,name,page_id,' . Auth::user()->page->id,
             'image' => 'image'
         ];
     }

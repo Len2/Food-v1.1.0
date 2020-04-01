@@ -3,32 +3,30 @@
 namespace App\Http\Requests\Page;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class UpdatePageRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+
     public function authorize()
     {
-        return true;
+        return Gate::allows('page-create');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
+    }
+
     public function rules()
     {
         return [
-            'name' => 'string',
-            'description' => 'string',
-            'work_time' => 'string',
-            'phone_number' => 'string|min:6',
-            'address_id' => 'regex:/^[0-9]+$/'
+            'name' => 'required',
+            'url' => 'required',
+            'description' => 'required',
+            'work_start' => 'required',
+            'work_end' => 'required',
         ];
     }
 }

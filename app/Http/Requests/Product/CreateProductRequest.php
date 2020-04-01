@@ -3,32 +3,29 @@
 namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CreateProductRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        return true;
+        return Gate::allows('category-create');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
+    }
+
     public function rules()
     {
         return [
             'name' => 'required',
             'description' => 'required|string',
-            'price' => 'required|regex:/^\-?[0-9]+(?:\.[0-9]+)?$/',
-            'category_id' => 'required|regex:/^[0-9,-]*$/',
-            'page_id' => 'required|regex:/^[0-9]+$/',
+            'active' =>'required',
+            'initial_price' => 'required',
+            'price' => 'required',
             'image' => 'required|image',
         ];
     }

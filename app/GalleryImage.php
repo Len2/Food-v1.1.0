@@ -11,16 +11,16 @@ class GalleryImage extends Model
 
     public function page()
     {
-        return $this->belongsTo(Page::class);
+        return $this->hasOne(Page::class);
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function album()
-    {
-        return $this->belongsTo(Album::class);
-    }
+//    public function user()
+//    {
+//        return $this->belongsTo(User::class);
+//    }
+//
+//    public function album()
+//    {
+//        return $this->belongsTo(Album::class);
+//    }
 }

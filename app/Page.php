@@ -14,10 +14,21 @@ class Page extends Model
     }
 
 
-//    public function products()
-//    {
-//        return $this->hasMany(Product::class);
-//    }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function categories() //important
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function galleryImages()
+    {
+        return $this->hasMany(GalleryImage::class);
+    }
+
 //
 //    public function tables()
 //    {
@@ -39,10 +50,7 @@ class Page extends Model
 //        return $this->hasMany(Reservation::class);
 //    }
 //
-//    public function categories()
-//    {
-//        return $this->belongsToMany(Category::class);
-//    }
+
 //
 //    public function invoices()
 //    {
@@ -69,8 +77,5 @@ class Page extends Model
 //        return $this->hasMany(PageFollowers::class);
 //    }
 //
-//    public function galleryImages()
-//    {
-//        return $this->hasMany(GalleryImage::class);
-//    }
+
 }

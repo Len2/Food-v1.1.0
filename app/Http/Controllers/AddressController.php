@@ -33,7 +33,7 @@ class AddressController extends Controller
     public function update(UpdateAddressRequest $request, Address $address)
     {
         $data = $request->only([
-            'longitude', 'latitude', 'city', 'street', 'zip_code'
+            'longitude', 'latitude', 'city', 'street', 'zipcode'
         ]);
 
         $address->update($data);

@@ -39,11 +39,22 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::apiResource('roles','Api\ACL\RoleController');
 
+    Route::apiResource('pages','PageController');  //,['except' => ['update']]
+
+
+    Route::apiResource('products','ProductController');
+
+    Route::apiResource('category','CategoryController');
+
+    Route::apiResource('galleryImages', 'GalleryImageController');
+
+
 //    Route::apiResource('address','AddressController');
 //
 //    Route::apiResource('albums','AlbumController');
 //
-//    Route::apiResource('category','CategoryController');
+
+
 //
 //    Route::apiResource('ordertask','OrderTasksController');
 //
@@ -51,7 +62,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 //
 //    Route::apiResource('pageusers','PageUserController');
 //
-//    Route::apiResource('products','ProductController');
+
 //
 //    Route::apiResource('tables','TableController');
 //
@@ -67,7 +78,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 //
 //    Route::apiResource('pagefollowers', 'PageFollowersController');
 //
-//    Route::apiResource('galleryImage', 'GalleryImageController');
+
 //
 //    Route::apiResource('user/likes', 'UserLikeController');
 
@@ -77,11 +88,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 //
 //    Route::apiResource('offers', 'OfferController');
 
-    Route::apiResource('pages','PageController',['except' => ['update']]);
 
-    Route::post('/pages/{page}',[
-        'uses' => 'PageController@update'
-    ]);
 
     Route::apiResource('tasks','TaskController');
 

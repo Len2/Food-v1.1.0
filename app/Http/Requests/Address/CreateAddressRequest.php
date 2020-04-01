@@ -28,7 +28,7 @@ class CreateAddressRequest extends FormRequest
             'latitude' => 'required|regex:/^[0-9]+$/',
             'city' => 'required',
             'street' => 'required',
-            'zip_code' => 'required|regex:/^[0-9]+$/'
+            'zipcode' => 'required|regex:/^[0-9]+$/'
         ];
     }
 }
