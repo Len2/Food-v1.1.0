@@ -46,6 +46,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::apiResource('category','CategoryController');
 
+    Route::apiResource('galleryImages', 'GalleryImageController');
+
 
 //    Route::apiResource('address','AddressController');
 //
@@ -76,7 +78,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 //
 //    Route::apiResource('pagefollowers', 'PageFollowersController');
 //
-//    Route::apiResource('galleryImage', 'GalleryImageController');
+
 //
 //    Route::apiResource('user/likes', 'UserLikeController');
 

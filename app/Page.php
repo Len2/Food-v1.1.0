@@ -24,6 +24,11 @@ class Page extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function galleryImages()
+    {
+        return $this->hasMany(GalleryImage::class);
+    }
+
 //
 //    public function tables()
 //    {
@@ -72,8 +77,5 @@ class Page extends Model
 //        return $this->hasMany(PageFollowers::class);
 //    }
 //
-//    public function galleryImages()
-//    {
-//        return $this->hasMany(GalleryImage::class);
-//    }
+
 }

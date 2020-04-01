@@ -24,10 +24,7 @@ class CreateGalleryImageRequest extends FormRequest
     public function rules()
     {
         return [
-            'page_id' => 'required|regex:/^[0-9]+$/',
-            'user_id' => 'required|regex:/^[0-9]+$/',
-            'album_id' => 'required|regex:/^[0-9]+$/',
-            'photo' => 'required|image',
+           // 'photo' => 'required|image',
         ];
     }
 }

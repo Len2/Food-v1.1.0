@@ -25,7 +25,7 @@ class ProductController extends Controller
     }
     public function index()
     {
-        if (! Gate::allows('product-list')) {
+        if (!Gate::allows('product-list')) {
             throw new AuthorizationException('You have not permission');
         }
 

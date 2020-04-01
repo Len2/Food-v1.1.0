@@ -27,7 +27,7 @@ class PageController extends Controller
 
     public function index()
     {
-        if (! Gate::allows('page-list')) {
+        if (!Gate::allows('page-list')) {
             throw new AuthorizationException('You have not permission');
         }
 

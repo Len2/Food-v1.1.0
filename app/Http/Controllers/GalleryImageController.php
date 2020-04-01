@@ -3,73 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GalleryImage\CreateGalleryImageRequest;
-use App\Http\Requests\GalleryImage\UpdateGalleryImageRequest;
+//use App\Http\Requests\GalleryImage\UpdateGalleryImageRequest;
 use App\Http\Resources\GalleryImageResource;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Image;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 use App\GalleryImage;
 
 class GalleryImageController extends Controller
 {
-    public function index()
+
+    protected $path;
+    function __construct()
     {
-        return GalleryImageResource::collection(GalleryImage::paginate());
+        $this->path = public_path('images/gallery/');
+        $this->user = Auth::user();
     }
 
+    public function index()
+    {
+        $galleryImages=$this->user->page->galleryImages;
+        return GalleryImageResource::collection($galleryImages);
+    }
 
     public function store(CreateGalleryImageRequest $request)
     {
-        if ($request->hasFile('photo')) {
-            $imageName = $request->photo->getClientOriginalName();
+        $image = $request->file('photo');
+        $countRequest = count($request->file('photo'));
 
-            $galleryImage = new GalleryImage;
-            $galleryImage->page_id = $request->page_id;
-            $galleryImage->user_id = $request->user_id;
-            $galleryImage->album_id = $request->album_id;
-            $galleryImage->photo = $imageName;
-            $galleryImage->save();
-        } else {
-            return response()->json("The Gallery-Image failed to be stored", 404);
+        for($i=0; $i < $countRequest; $i++ ){
+            $filename = mt_rand(111111111,999999999). '.' .$image[$i]->getClientOriginalExtension();
+            $path = $this->path.$filename;
+            $page=$this->user->page;
+            Image::make($image[$i]->getRealPath())->save($path);
+            $page->galleryImages()->save(
+                new GalleryImage(
+                    [
+                        'photo' =>$filename,
+                    ]
+                )
+            );
         }
-
-        return new GalleryImageResource($galleryImage);
+        return $this->index();
     }
 
-
-    public function show($id)
+    public function destroy(GalleryImage $galleryImage)
     {
-        $galleryImage = GalleryImage::findOrFail($id);
-        return new GalleryImageResource($galleryImage);
-    }
-
-
-    public function update(UpdateGalleryImageRequest $request, $id)
-    {
-        $galleryImage = GalleryImage::findOrFail($id);
-
-        $data = $request->only([
-            'page_id', 'user_id', 'album_id', 'photo',
-        ]);
-
-        if ($request->hasFile('photo')) {
-            $imageName = $request->photo->getClientOriginalName();
-            $galleryImage->page_id = $request->page_id;
-            $galleryImage->user_id = $request->user_id;
-            $galleryImage->album_id = $request->album_id;
-            $galleryImage->photo = $imageName;
-            $galleryImage->update();
+        if($galleryImage->page_id == $this->user->page->id){
+            $galleryImage->delete();
         }
-
-        $galleryImage->update($data);
-        return new GalleryImageResource($galleryImage);
-    }
-
-
-    public function destroy($id)
-    {
-        $galleryImage = GalleryImage::findOrFail($id);
-        $galleryImage->delete();
-
         return new GalleryImageResource($galleryImage);
     }
 }
