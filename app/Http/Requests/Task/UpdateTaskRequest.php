@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Task;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateTaskRequest extends FormRequest
 {
@@ -13,7 +15,13 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize()
     {
+//        return Gate::allows('task-edit');
         return true;
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have no permission');
     }
 
     /**
@@ -24,7 +32,7 @@ class UpdateTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'task_list_id' => 'regex:/^[0-9]+$/',
+            'task_list_id' => 'exists:task_lists,id|regex:/^[0-9]+$/',
             'status' => 'string',
             'description' => 'string',
             'start_date' => 'date',

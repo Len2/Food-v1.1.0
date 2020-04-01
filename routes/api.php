@@ -55,7 +55,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 //
 //    Route::apiResource('tables','TableController');
 //
-//    Route::apiResource('tasklists','TaskListController');
+    Route::apiResource('task/lists','TaskListController');
 //
 //    Route::apiResource('invoices','InvoiceController');
 //
@@ -83,7 +83,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
         'uses' => 'PageController@update'
     ]);
 
-   // Route::apiResource('tasks','TaskController');
+    Route::apiResource('tasks','TaskController');
 
     /*Route::group(['middleware' => ['role:Admin']], function () {
     });*/

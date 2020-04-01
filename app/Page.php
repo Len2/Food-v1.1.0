@@ -49,10 +49,10 @@ class Page extends Model
 //        return $this->hasMany(Invoice::class);
 //    }
 //
-//    public function taskLists()
-//    {
-//        return $this->hasMany(TaskList::class);
-//    }
+    public function taskLists()
+    {
+        return $this->hasMany(TaskList::class);
+    }
 //
 //    public function address()
 //    {
