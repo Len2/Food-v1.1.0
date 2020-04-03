@@ -8,13 +8,16 @@ use App\Http\Resources\TaskResource;
 use Exception;
 use App\Task;
 use Illuminate\Support\Facades\Auth;
-use JWTAuth;
+use Image;
 
 class TaskController extends Controller
 {
 
+    protected $path;
+
     function __construct()
     {
+        $this->path = public_path('attachments/tasks/');
         $this->user = Auth::user();
     }
 
@@ -39,7 +42,23 @@ class TaskController extends Controller
     {
         try {
             if ($this->user->hasRole('page-owner')) {
-                $task = Task::create($request->all());
+
+                $task = new Task();
+
+                $task->task_list_id = $request->task_list_id;
+                $task->status = $request->status;
+                $task->description = $request->description;
+                $task->start_date = $request->start_date;
+                $task->end_date = $request->end_date;
+                $task->notify_email = $request->notify_email;
+
+                $attachment =  $request->file('attachment');
+                $filename = time() . '.' . $attachment->getClientOriginalExtension();
+                $path = $this->path.$filename;
+                Image::make($attachment->getRealPath())->save($path);
+                $task->attachment = $filename;
+                $task->save();
+
                 return new TaskResource($task);
             } else {
                 throw new Exception('Error! You have to be a page owner to create a task!');
@@ -58,17 +77,32 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        $data = $request->only([
-            'task_list_id', 'status', 'description', 'start_date', 'end_date', 'notify_email', 'attachment',
-        ]);
-
         try {
             $taskList = $this->user->page->taskLists()
                 ->where('id', $task->task_list_id)->first();
 
             if ($taskList) {
-                $task->update($data);
-                return new TaskResource($data);
+                if ($request->hasFile('attachment')) {
+                    $oldFilename = $task->attachment;
+                    if (\File::exists($this->path.$oldFilename)) {
+                        unlink($this->path.$oldFilename);
+                    }
+                    $attachment = $request->file('attachment');
+                    $filename = time() . '.' . $attachment->getClientOriginalExtension();
+                    Image::make($attachment->getRealPath())->save($this->path.$filename);
+                    $attachment->attachment = $filename;
+                    $task->attachment = $filename;
+                }
+
+                $task->task_list_id = $request->task_list_id;
+                $task->status = $request->status;
+                $task->description = $request->description;
+                $task->start_date = $request->start_date;
+                $task->end_date = $request->end_date;
+                $task->notify_email = $request->notify_email;
+                $task->save();
+
+                return new TaskResource($task);
             } else {
                 throw new Exception('Error! You cannot edit this task!');
             }
@@ -86,6 +120,10 @@ class TaskController extends Controller
 
             if ($taskList) {
                 $task->delete();
+                $attachment = $task->attachment;
+                if (\File::exists($this->path.$attachment)) {
+                    unlink($this->path.$attachment);
+                }
                 return response()->json(null, 200);
             } else {
                 throw new Exception('Error! You cannot delete this task!');

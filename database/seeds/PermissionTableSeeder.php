@@ -37,6 +37,7 @@ class PermissionTableSeeder extends Seeder
             'task-list-create',
             'task-list-edit',
             'task-list-delete',
+
             'product-list',
             'product-create',
             'product-edit',

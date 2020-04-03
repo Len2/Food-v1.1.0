@@ -21,7 +21,7 @@ class CreateTasksTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->string('notify_email');
-            $table->text('attachment');
+            $table->string('attachment');
             $table->timestamps();
         });
     }

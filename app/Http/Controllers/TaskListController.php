@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskList\CreateTaskListRequest;
 use App\Http\Requests\TaskList\UpdateTaskListRequest;
 use App\Http\Resources\TaskListResource;
+use App\Page;
 use Exception;
 use App\TaskList;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,10 @@ class TaskListController extends Controller
     {
         try {
             if ($this->user->hasRole('page-owner')) {
-                $taskList = TaskList::create($request->all());
+                $page = Page::findOrFail($this->user->page->id);
+                $taskList = new TaskList();
+                $taskList->name = $request->name;
+                $page->taskLists()->save($taskList);
                 return new TaskListResource($taskList);
             } else {
                 throw new Exception('Error! You have to be a page owner to create task list!');
@@ -54,14 +58,13 @@ class TaskListController extends Controller
     public function update(UpdateTaskListRequest $request, $id)
     {
         $taskList = TaskList::findOrFail($id);
-
-        $data = $request->only([
-            'name', 'page_id'
-        ]);
+//        dd($page);
 
         try {
             if ($this->user->page->id === $taskList->page_id) {
-                $taskList->update($data);
+                $page = Page::findOrFail($this->user->page->id);
+                $taskList->name = $request->name;
+                $page->taskLists()->save($taskList);
                 return new TaskListResource($taskList);
             } else {
                 throw new Exception('Error! You cannot edit this task list!');

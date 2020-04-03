@@ -33,7 +33,6 @@ class UpdateTaskListRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'page_id' => 'exists:pages,id|regex:/^[0-9]+$/'
         ];
     }
 }
