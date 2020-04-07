@@ -42,28 +42,24 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
 
-
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
 
-
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
+
         return response()->json(["data" => $user],201);
-      //  echo "Test post method";
-
-
     }
 
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
+//    public function show($id)
+//    {
+//        //
+//    }
+//
+//    public function edit($id)
+//    {
+//        //
+//    }
 
     public function update(Request $request, $id)
     {
@@ -77,7 +73,6 @@ class UserController extends Controller
             'password' => 'same:confirm-password',
             'roles' => 'required'
         ]);
-
 
         $input = $request->all();
         if(!empty($input['password'])){

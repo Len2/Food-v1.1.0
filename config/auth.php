@@ -46,6 +46,13 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'user_pages' => [
+            'driver' => 'jwt',
+            'provider' => 'user_pages',
+        ],
+
+
     ],
 
     /*
@@ -75,6 +82,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'user_pages' => [
+            'driver' => 'eloquent',
+            'model' => App\UserPage::class,
+        ],
     ],
 
     /*
@@ -98,6 +110,11 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
+        ],
+
+        'user_pages' => [
+            'driver' => 'eloquent',
+            'model' => App\UserPage::class,
         ],
     ],
 

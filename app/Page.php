@@ -29,6 +29,11 @@ class Page extends Model
         return $this->hasMany(GalleryImage::class);
     }
 
+    public function userPages()
+    {
+        return $this->hasMany(UserPage::class);
+    }
+
 //
 //    public function tables()
 //    {

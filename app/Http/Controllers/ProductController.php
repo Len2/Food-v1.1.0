@@ -65,12 +65,10 @@ class ProductController extends Controller
         $product->image = $filename;
 
         $categories = Category::find($request->category_ID);
-
-
         $page->products()->save($product);
         $product->categories()->attach($categories);
-        Image::make($image->getRealPath())->save($path);
 
+        Image::make($image->getRealPath())->save($path);
         return new ProductResource($product);
     }
 
@@ -104,13 +102,11 @@ class ProductController extends Controller
         $product->initial_price =$request->initial_price;
         $product->price =$request->price;
 
-
         $categories = Category::find($request->category_ID);
         $product->categories()->sync($categories);
         $product->save();
         return new ProductResource($product);
     }
-
 
     public function destroy(Product $product)
     {

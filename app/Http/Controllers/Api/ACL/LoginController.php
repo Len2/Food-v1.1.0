@@ -36,7 +36,6 @@ class LoginController extends Controller
 
         ], 200);
     }
-
     public  function signin (Request $request)
     {
         try{
@@ -55,4 +54,6 @@ class LoginController extends Controller
             'token' => $token
         ],200);
     }
+
+
 }

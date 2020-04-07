@@ -17,7 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Simple User Route
 Route::post('/signup',[
    'uses' => 'Api\ACL\LoginController@signup'
 ]);
@@ -25,13 +24,23 @@ Route::post('/signin',[
     'uses' => 'Api\ACL\LoginController@signin'
 ]);
 
-//Route::get('/pageOwnerRegister',[
-//    'uses' => 'Api\ACL\UserController@getIDPageOwner'
-//]);
-
 Route::post('/registerPageOwner',[
     'uses' => 'Api\ACL\UserController@registerPageOwner'
 ]);
+
+Route::group(['middleware' => ['assign.guard:user_pages']],function ()
+{
+    Route::post('/userpageLogin',[
+        'uses' => 'Api\ACL\LoginController@signin'
+    ]);
+});
+
+Route::group(['middleware' => ['assign.guard:user_pages','jwt.auth']],function ()
+{
+    Route::apiResource('userPages','Api\ACL\UserPageController');
+});
+
+
 
 
 Route::group(['middleware' => ['jwt.auth']], function() {
@@ -40,7 +49,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::apiResource('roles','Api\ACL\RoleController');
 
     Route::apiResource('pages','PageController');  //,['except' => ['update']]
-
 
     Route::apiResource('products','ProductController');
 
@@ -95,9 +103,5 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     /*Route::group(['middleware' => ['role:Admin']], function () {
     });*/
 });
-
-/*Route::group(['middleware' => ['auth:api']], function() {
-
-  });*/
 
 

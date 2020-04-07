@@ -13,11 +13,7 @@ use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         if (! Gate::allows('role-list')) {
@@ -32,22 +28,6 @@ class RoleController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-//    public function create()
-//    {
-//
-//    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if (! Gate::allows('role-create')) {
@@ -57,17 +37,28 @@ class RoleController extends Controller
             'name'      =>  'required',
             'permission'=> 'required',
         ]);
-        $role = Role::create(['name' => $request->input('name')]);
+
+        if($request->has('guard_name')){
+            $reqRole = [
+                'name' => $request->input('name'),
+                'guard_name' => $request->input('guard_name')
+            ];
+        }else{
+            $reqRole = [
+                'name' => $request->input('name'),
+                'guard_name' => "web"
+            ];
+        }
+
+        $role = Role::create($reqRole);
         $role->syncPermissions($request->input('permission'));
         return response()->json(["data" => $role],201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+//    public function storeWithGuard (Request $request){
+//        $role = Role::create(['guard_name' => 'user_pages', 'name' => 'driver2']);
+//    }
+
 //    public function show($id)
 //    {
 //        //
@@ -84,13 +75,6 @@ class RoleController extends Controller
 //        //
 //    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         if (! Gate::allows('role-edit')) {
@@ -109,18 +93,15 @@ class RoleController extends Controller
 
         $role = Role::find($id);
         $role->name = $request->input('name');
+        if($request->has('guard_name')){
+            $role->guard_name = $request->input('guard_name');
+        }
         $role->save();
 
         $role->syncPermissions($request->input('permission'));
         return response()->json(["data" => $this->index()],200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         if (! Gate::allows('role-delete')) {
