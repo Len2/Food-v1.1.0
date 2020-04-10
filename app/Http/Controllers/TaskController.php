@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Task\CreateTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
+use App\TaskList;
 use Exception;
 use App\Task;
 use Illuminate\Support\Facades\Auth;
@@ -26,14 +27,8 @@ class TaskController extends Controller
         if ($this->user->hasRole('Admin')) {
             return TaskResource::collection(Task::all());
         } else if ($this->user->hasRole('page-owner')) {
-            $tasks = $this->user->page->taskLists()
-                ->with('tasks')
-                ->get()
-                ->pluck('tasks')
-                ->collapse()
-                ->unique('id')
-                ->values();
-            return TaskResource::collection($tasks);
+             $task=TaskList::with('tasks')->get();
+            return TaskResource::collection($task);
         }
     }
 
