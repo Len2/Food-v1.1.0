@@ -57,7 +57,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::apiResource('galleryImages', 'GalleryImageController');
 
 
-//    Route::apiResource('address','AddressController');
+    Route::apiResource('address','AddressController');
 //
 //    Route::apiResource('albums','AlbumController');
 //

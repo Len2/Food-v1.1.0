@@ -24,11 +24,11 @@ class CreateAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'longitude' => 'required|regex:/^[0-9]+$/',
-            'latitude' => 'required|regex:/^[0-9]+$/',
+            'longitude' => 'required',
+            'latitude' => 'required',
             'city' => 'required',
             'street' => 'required',
-            'zipcode' => 'required|regex:/^[0-9]+$/'
+            'zip_code' => 'required'
         ];
     }
 }

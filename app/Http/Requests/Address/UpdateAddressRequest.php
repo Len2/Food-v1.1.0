@@ -24,11 +24,8 @@ class UpdateAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'longitude' => 'regex:/^[0-9]+$/',
-            'latitude' => 'regex:/^[0-9]+$/',
-            'city' => '',
-            'street' => '',
-            'zipcode' => 'regex:/^[0-9]+$/'
+            'longitude' => 'required',
+            'latitude' => 'required'
         ];
     }
 }

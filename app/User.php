@@ -32,9 +32,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne('App\Page');
     }
 
-//    public function address(){
-//        return $this->hasOne('App\Address');
-//    }
+    public function address(){
+        return $this->hasMany('App\Address');
+    }
 
 
 
