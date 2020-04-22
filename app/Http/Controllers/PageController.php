@@ -14,7 +14,6 @@ use Exception;
 use Image;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\AuthorizationException;
-
 class PageController extends Controller
 {
 

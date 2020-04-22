@@ -8,6 +8,7 @@ use App\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class LoginController extends Controller
 {
@@ -53,6 +54,13 @@ class LoginController extends Controller
         return response()->json([
             'token' => $token
         ],200);
+    }
+
+    public function test(){
+        // Cart::add('1111111', 'Product 2', 10, 1.99);
+
+        $cartItems=Cart::content();
+        return $cartItems;
     }
 
 

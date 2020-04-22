@@ -44,11 +44,24 @@ Route::group(['middleware' => ['assign.guard:user_pages','jwt.auth']],function (
 
 
 Route::group(['middleware' => ['jwt.auth']], function() {
+
     Route::apiResource('users','Api\ACL\UserController');
 
     Route::apiResource('roles','Api\ACL\RoleController');
 
     Route::apiResource('pages','PageController');  //,['except' => ['update']]
+
+    Route::post('/pages/test',[
+        'uses' => 'PageController@postCheckout'
+    ]);
+
+    Route::post('/pay',[
+        'uses' => 'PaymentController@postCheckout'
+    ]);
+
+    Route::get('pay/test',[
+        'uses' => 'PaymentController@test'
+    ]);
 
     Route::apiResource('products','ProductController');
 
@@ -92,7 +105,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
 
 
-//    Route::apiResource('orders', 'OrderController');
+    Route::apiResource('orders', 'OrderController',['except' => ['store','destroy']]);
+    Route::apiResource('carts', 'CartController',['except' => ['store','destroy']]);
 //
 //    Route::apiResource('offers', 'OfferController');
 

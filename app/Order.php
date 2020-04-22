@@ -8,10 +8,10 @@ class Order extends Model
 {
     protected $guarded = [];
 
-    public function products()
-    {
-        return $this->belongsToMany(Product::class);
-    }
+//    public function products()
+//    {
+//        return $this->belongsToMany(Product::class)
+//    }
 
     public function user()
     {
@@ -23,18 +23,22 @@ class Order extends Model
         return $this->belongsTo(Page::class);
     }
 
-    public function table()
-    {
-        return $this->belongsTo(Table::class);
+    public function carts(){
+        return $this->hasMany(Cart::class);
     }
 
-    public function address()
-    {
-        return $this->belongsTo(Address::class);
-    }
+//    public function table()
+//    {
+//        return $this->belongsTo(Table::class);
+//    }
+//
+//    public function address()
+//    {
+//        return $this->belongsTo(Address::class);
+//    }
 
-    public function invoices()
-    {
-        return $this->hasMany(Invoice::class);
-    }
+//    public function invoices()
+//    {
+//        return $this->hasMany(Invoice::class);
+//    }
 }
