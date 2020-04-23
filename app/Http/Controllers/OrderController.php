@@ -13,6 +13,9 @@ class OrderController extends Controller
 {
     public function index()
     {
+        if (!Gate::allows('order-list')) {
+            throw new AuthorizationException('You have not permission');
+        }
         if(Auth::user()->hasRole('Admin')){
             return OrderResource::collection(Order::get());
         }else{
@@ -21,35 +24,12 @@ class OrderController extends Controller
         }
     }
 
-
-//    public function store(CreateOrderRequest $request)
-//    {
-//        $order = Order::create($request->all());
-//        return new OrderResource($order);
-//    }
-
-
     public function show(Order $order)
     {
+        if (!Gate::allows('order-single')) {
+            throw new AuthorizationException('You have not permission');
+        }
         $order->carts;
         return new OrderResource($order);
     }
-
-
-//    public function update(UpdateOrderRequest $request, Order $order)
-//    {
-//        $data = $request->only([
-//            'user_id', 'page_id', 'table_id', 'date', 'status', 'type', 'current_address_id', 'delivery_address_id',
-//        ]);
-//
-//        $order->update($data);
-//        return new OrderResource($order);
-//    }
-
-
-//    public function destroy(Order $order)
-//    {
-//        $order->delete();
-//        return new OrderResource($order);
-//    }
 }

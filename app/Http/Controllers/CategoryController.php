@@ -31,7 +31,6 @@ class CategoryController extends Controller
 
     public function store(CreateCategoryRequest $request)
     {
-
         $page= $this->user->page;
         $category =new Category;
 

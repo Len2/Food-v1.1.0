@@ -24,6 +24,9 @@ class GalleryImageController extends Controller
 
     public function index()
     {
+        if (!Gate::allows('gallery-list')) {
+            throw new AuthorizationException('You have not permission');
+        }
         $galleryImages=$this->user->page->galleryImages;
         return GalleryImageResource::collection($galleryImages);
     }
@@ -51,6 +54,9 @@ class GalleryImageController extends Controller
 
     public function destroy(GalleryImage $galleryImage)
     {
+        if (!Gate::allows('gallery-delete')) {
+            throw new AuthorizationException('You have not permission');
+        }
         if($galleryImage->page_id == $this->user->page->id){
             $galleryImage->delete();
         }

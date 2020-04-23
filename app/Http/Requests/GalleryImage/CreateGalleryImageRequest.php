@@ -3,24 +3,19 @@
 namespace App\Http\Requests\GalleryImage;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CreateGalleryImageRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
-        return true;
+        return Gate::allows('gallery-create');
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
+    }
     public function rules()
     {
         return [
