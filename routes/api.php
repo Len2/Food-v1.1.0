@@ -42,6 +42,13 @@ Route::group(['middleware' => ['assign.guard:user_pages','jwt.auth']],function (
 
 
 
+Route::post('create-payment', [
+    'uses' => 'PaymentController@create_payment',
+]);
+Route::post('execute-payment', [
+    'uses' => 'PaymentController@execute_payment',
+]);
+
 
 Route::group(['middleware' => ['jwt.auth']], function() {
 
