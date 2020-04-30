@@ -12,6 +12,7 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
+
         $permissions = [
             'role-list',
             'role-create',
@@ -66,6 +67,8 @@ class PermissionTableSeeder extends Seeder
 
 
 
+        Permission::where('id', 'like' ,'%%')->delete();
+        DB::statement("ALTER TABLE permissions AUTO_INCREMENT = 1;");
 
         foreach ($permissions as $permission) {
             Permission::create([

@@ -14,20 +14,20 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $user=User::find(1);
-//        $user = User::create([
-//            'firstName' => 'Admin',
-//            'lastName' => 'Admin',
-//            'email' => 'admin@gmail.com',
-//            'password' => bcrypt('123456'),
-//        ]);
+        $user = User::updateOrCreate([
+            'firstName' => 'Admin',
+            'lastName' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('123456'),
+        ]);
 
         $role = Role::updateOrCreate(['name' => 'Admin']);
 
-        $permissions = Permission::pluck('id','id')->all();
+        $permissions = Permission::where('guard_name','=','web')->pluck('id','id');
 
         $role->syncPermissions($permissions);
 
         $user->assignRole([$role->id]);
+
     }
 }
