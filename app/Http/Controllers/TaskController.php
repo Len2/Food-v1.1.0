@@ -18,8 +18,12 @@ class TaskController extends Controller
 
     function __construct()
     {
+        if(Auth::guard("user_pages")->user()== ''){
+            $this->user=Auth::guard("api")->user();
+        }else{
+            $this->user=Auth::guard("user_pages")->user();
+        }
         $this->path = public_path('attachments/tasks/');
-        $this->user = Auth::user();
     }
 
     public function index()

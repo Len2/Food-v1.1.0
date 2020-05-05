@@ -16,14 +16,19 @@ class UserPageController extends Controller
 
     public function __construct()
     {
-        $this->user = Auth::user();
+
         $this->middleware('assign.guard:user_pages');
+        if(Auth::guard("user_pages")->user()== ''){
+            $this->user=Auth::guard("api")->user();
+        }else{
+            $this->user=Auth::guard("user_pages")->user();
+        }
     }
     public function index()
     {
-    // if (! Gate::allows('driver-list')) {
-    //new AuthorizationException('You have not permission for update role');
-    // }
+     if (! Gate::allows('driver-list')) {
+        new AuthorizationException('You have not permission for update role');
+     }
         $page = $this->user->page;
         return response()->json(["data" => $page->userPages],200);
     }
@@ -100,7 +105,7 @@ class UserPageController extends Controller
 
     public function destroy($id)
     {
-        if(Auth::user()->page_id == $this->user->page->id ){
+        if($this->user->page_id == $this->user->page->id ){
             UserPage::find($id)->delete();
             return response()->json(null,200);
         }else{

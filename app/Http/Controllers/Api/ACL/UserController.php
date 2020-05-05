@@ -51,10 +51,11 @@ class UserController extends Controller
         return response()->json(["data" => $user],201);
     }
 
-//    public function show($id)
-//    {
-//        //
-//    }
+    public function show(User $user)
+    {
+        $user->address;
+        return response()->json(["data" => $user],200);
+    }
 //
 //    public function edit($id)
 //    {

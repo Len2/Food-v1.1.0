@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\ACL;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -110,5 +111,15 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role->delete();
         return response()->json(null,200);
+    }
+
+    public function showPermission($guard_name=null){
+
+        if($guard_name != null){
+            $permissions=Permission::where('guard_name' ,'=',$guard_name )->get();
+        }else{
+            $permissions=Permission::all();
+        }
+        return response()->json(["data" => $permissions],200);
     }
 }

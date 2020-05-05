@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Category;
 use Image;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -16,8 +17,12 @@ class CategoryController extends Controller
     protected $path;
     function __construct()
     {
+        if(Auth::guard("user_pages")->user()== ''){
+            $this->user=Auth::guard("api")->user();
+        }else{
+            $this->user=Auth::guard("user_pages")->user();
+        }
         $this->path = public_path('images/category/');
-        $this->user = Auth::user();
     }
 
     public function index()

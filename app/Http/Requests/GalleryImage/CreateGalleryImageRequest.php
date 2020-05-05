@@ -4,6 +4,7 @@ namespace App\Http\Requests\GalleryImage;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 
 class CreateGalleryImageRequest extends FormRequest
 {

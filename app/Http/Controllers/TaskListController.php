@@ -15,7 +15,11 @@ class TaskListController extends Controller
 
     public function __construct()
     {
-        $this->user = Auth::user();
+        if(Auth::guard("user_pages")->user()== ''){
+            $this->user=Auth::guard("api")->user();
+        }else{
+            $this->user=Auth::guard("user_pages")->user();
+        }
     }
 
 

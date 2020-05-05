@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//    return $request->user();
 });
 
 Route::post('/signup',[
@@ -37,17 +37,21 @@ Route::group(['middleware' => ['assign.guard:user_pages']],function ()
 
 Route::group(['middleware' => ['assign.guard:user_pages','jwt.auth']],function ()
 {
-    Route::apiResource('userPages','Api\ACL\UserPageController');
+
 });
 
 
 
-Route::post('create-payment', [
-    'uses' => 'PaymentController@create_payment',
-]);
-Route::post('execute-payment', [
-    'uses' => 'PaymentController@execute_payment',
-]);
+//Route::post('create-payment', [
+//    'uses' => 'PaymentController@create_payment',
+//]);
+//Route::post('execute-payment', [
+//    'uses' => 'PaymentController@execute_payment',
+//]);
+
+
+
+
 
 
 Route::group(['middleware' => ['jwt.auth']], function() {
@@ -56,18 +60,14 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::apiResource('roles','Api\ACL\RoleController');
 
-    Route::apiResource('pages','PageController');  //,['except' => ['update']]
-
-    Route::post('/pages/test',[
-        'uses' => 'PageController@postCheckout'
+    Route::get('/permissions/{guard_name?}', [
+        'uses' => 'Api\ACL\RoleController@showPermission',
     ]);
+
+    Route::apiResource('pages','PageController');  //,['except' => ['update']]
 
     Route::post('/pay',[
         'uses' => 'PaymentController@postCheckout'
-    ]);
-
-    Route::get('pay/test',[
-        'uses' => 'PaymentController@test'
     ]);
 
     Route::apiResource('products','ProductController');
@@ -81,7 +81,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 //
 //    Route::apiResource('albums','AlbumController');
 //
-
+    Route::apiResource('userPages','Api\ACL\UserPageController');
 
 //
 //    Route::apiResource('ordertask','OrderTasksController');

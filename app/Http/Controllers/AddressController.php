@@ -13,16 +13,24 @@ use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
 {
+
+    function __construct()
+    {
+        if(Auth::guard("user_pages")->user()== ''){
+            $this->user=Auth::guard("api")->user();
+        }else{
+            $this->user=Auth::guard("user_pages")->user();
+        }
+    }
+
     public function index()
     {
-        $address=Auth::user()->address;
+        $address=$this->user->address;
         return AddressResource::collection($address);
     }
 
-
     public function store(CreateAddressRequest $request)
     {
-        $user=Auth::user();
         $address =new Address;
 
         $address->longitude =$request->longitude;
@@ -35,7 +43,7 @@ class AddressController extends Controller
         $address->phone_number2 =$request->phone_number2;
 
         // $address= $request->all();
-        $user->address()->save($address);
+        $this->user->address()->save($address);
         return new AddressResource($address);
     }
 
@@ -45,11 +53,8 @@ class AddressController extends Controller
 //        return new AddressResource($address);
 //    }
 
-
     public function update(UpdateAddressRequest $request, Address $address)
     {
-        $user=Auth::user();
-
         $address->longitude =$request->longitude;
         $address->latitude =$request->latitude;
         $address->city =$request->city;
@@ -60,14 +65,14 @@ class AddressController extends Controller
         $address->phone_number2 =$request->phone_number2;
 
         // $address= $request->all();
-        $user->address()->save($address);
+        $this->user->address()->save($address);
         return new AddressResource($address);
     }
 
 
     public function destroy(Address $address)
     {
-        if(Auth::user()->id == $address->user_id){
+        if($this->user->id == $address->user_id){
         $address->delete();
         return response()->json(null,200);
         }else{

@@ -11,13 +11,20 @@
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/test', function () {
+  //print_r(phpinfo());
+});
 //
 //Auth::routes();
 //
 //Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/test',[
-    'uses' => 'Api\ACL\LoginController@test'
-]);
+//Route::get('/test',[
+//    'uses' => 'Api\ACL\LoginController@test'
+//]);
+//
+//Route::get('/test', function () {
+////    $redis = app()->make('redis');
+////    $redis->set("key1","testValue");
+////    return $redis->get("key1");
+//    return phpinfo();
+//});

@@ -13,7 +13,7 @@ class CartController extends Controller
 
     function __construct()
     {
-        $this->user = Auth::user();
+            $this->user=Auth::guard("api")->user();
     }
     public function index()
     {

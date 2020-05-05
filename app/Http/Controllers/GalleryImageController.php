@@ -18,8 +18,12 @@ class GalleryImageController extends Controller
     protected $path;
     function __construct()
     {
+        if(Auth::guard("user_pages")->user()== ''){
+            $this->user=Auth::guard("api")->user();
+        }else{
+            $this->user=Auth::guard("user_pages")->user();
+        }
         $this->path = public_path('images/gallery/');
-        $this->user = Auth::user();
     }
 
     public function index()

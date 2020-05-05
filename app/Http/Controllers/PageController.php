@@ -20,8 +20,13 @@ class PageController extends Controller
     protected $path;
     function __construct()
     {
+        if(Auth::guard("user_pages")->user()== ''){
+            $this->user=Auth::guard("api")->user();
+        }else{
+            $this->user=Auth::guard("user_pages")->user();
+        }
         $this->path = public_path('images/pageLogo/');
-        $this->user = Auth::user();
+
     }
 
     public function index()
@@ -61,6 +66,7 @@ class PageController extends Controller
         }catch(Exception $e){
             return response()->json(array('error' =>Auth::user()->name."You can add only one restaurant",'message' => $e));
         }
+
     }
 
 //    public function show(Page $page)
