@@ -55,10 +55,11 @@ class CategoryController extends Controller
     }
 
 
-//    public function show(Category $category)
-//    {
-//        return new CategoryResource($category);
-//    }
+    public function show(Category $category)
+    {
+        $category->products;
+        return new CategoryResource($category);
+    }
 
 
     public function update(UpdateCategoryRequest $request, Category $category)

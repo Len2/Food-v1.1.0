@@ -32,6 +32,8 @@ class OrderController extends Controller
             throw new AuthorizationException('You have not permission');
         }
         $order->carts;
+        $order->user->address;
+        //$order->user->getRoleNames();
         return new OrderResource($order);
     }
 }

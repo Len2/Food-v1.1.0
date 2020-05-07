@@ -24,14 +24,10 @@ class CreateInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|regex:/^[0-9]+$/',
-            'order_product_id' => 'required|regex:/^[0-9]+$/',
-            'page_id' => 'required|regex:/^[0-9]+$/',
-            'total' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'description' => 'required|string|max:3000|nullable',
-            'date' => 'required|date',
-            'status' => 'required|in:paid,unpaid',
-            'payment_method' => 'required|string|max:50',
+            'order_id' => 'required|unique:invoices',
+            'file' => 'required|file',
+            'status' => 'in:paid,unpaid',
+            'description' => 'string|max:3000|nullable',
         ];
     }
 }

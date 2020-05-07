@@ -77,10 +77,11 @@ class ProductController extends Controller
     }
 
 
-//    public function show(Product $product)
-//    {
-//        return new ProductResource($product);
-//    }
+    public function show(Product $product)
+    {
+        $product->categories;
+        return new ProductResource($product);
+    }
 
 
     public function update(UpdateProductRequest $request, Product $product)

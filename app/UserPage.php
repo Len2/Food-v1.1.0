@@ -29,6 +29,10 @@ class UserPage extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    public function page(){
+        return $this->belongsTo(Page::class);
+    }
+
     // JWT Functions
     public function getJWTIdentifier()
     {

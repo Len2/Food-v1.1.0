@@ -95,8 +95,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 //    Route::apiResource('tables','TableController');
 //
     Route::apiResource('task/lists','TaskListController');
-//
-//    Route::apiResource('invoices','InvoiceController');
+
+    Route::apiResource('invoices','InvoiceController');
 //
 //    Route::apiResource('reservations','ReservationController');
 //

@@ -63,10 +63,12 @@ class UserPageController extends Controller
         ], 200);
     }
 
-//    public function show($id)
-//    {
-//        //
-//    }
+    public function show(UserPage $userPage)
+    {
+
+        $userPage->page;
+        return response()->json(["data" => $userPage],200);
+    }
 
 //    public function edit($id)
 //    {

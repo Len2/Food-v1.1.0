@@ -25,7 +25,7 @@ class AddressController extends Controller
 
     public function index()
     {
-        $address=$this->user->address;
+        $address=$this->page;
         return AddressResource::collection($address);
     }
 

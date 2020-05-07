@@ -24,14 +24,8 @@ class UpdateInvoiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|exists:users,id|regex:/^[0-9]+$/',
-            'order_product_id' => 'required|exists:orders_products,id|regex:/^[0-9]+$/',
-            'page_id' => 'required|exists:pages,id|regex:/^[0-9]+$/',
-            'total' => 'regex:/^\d+(\.\d{1,2})?$/',
-            'description' => 'string|max:3000|nullable',
-            'date' => 'date',
             'status' => 'in:paid,unpaid',
-            'payment_method' => 'string|max:50',
+            'description' => 'string|max:3000|nullable',
         ];
     }
 }
