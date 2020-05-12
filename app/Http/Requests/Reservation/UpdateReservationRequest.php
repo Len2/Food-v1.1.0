@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Reservation;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateReservationRequest extends FormRequest
 {
@@ -13,7 +15,12 @@ class UpdateReservationRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('reservation-update');
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
     }
 
     /**
@@ -24,12 +31,8 @@ class UpdateReservationRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'regex:/^[0-9]+$/',
-            'table_id' => 'regex:/^[0-9]+$/',
-            'page_id' => 'regex:/^[0-9]+$/',
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'number_of_persons' => 'regex:/^[0-9]+$/',
+            'status' =>'required',
+
         ];
     }
 }

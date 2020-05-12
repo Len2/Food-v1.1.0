@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 });
@@ -40,19 +39,12 @@ Route::group(['middleware' => ['assign.guard:user_pages','jwt.auth']],function (
 
 });
 
-
-
 //Route::post('create-payment', [
 //    'uses' => 'PaymentController@create_payment',
 //]);
 //Route::post('execute-payment', [
 //    'uses' => 'PaymentController@execute_payment',
 //]);
-
-
-
-
-
 
 Route::group(['middleware' => ['jwt.auth']], function() {
 
@@ -64,7 +56,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
         'uses' => 'Api\ACL\RoleController@showPermission',
     ]);
 
-    Route::apiResource('pages','PageController');  //,['except' => ['update']]
+    Route::apiResource('pages','PageController');
 
     Route::post('/pay',[
         'uses' => 'PaymentController@postCheckout'
@@ -84,38 +76,19 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::apiResource('userPages','Api\ACL\UserPageController');
 
 //
-//    Route::apiResource('ordertask','OrderTasksController');
-//
-//    Route::apiResource('pagecategories','PageCategoryController');
-//
-//    Route::apiResource('pageusers','PageUserController');
-//
-
-//
 //    Route::apiResource('tables','TableController');
 //
     Route::apiResource('task/lists','TaskListController');
 
     Route::apiResource('invoices','InvoiceController');
-//
-//    Route::apiResource('reservations','ReservationController');
-//
-//    Route::apiResource('orderProducts','OrderProductsController');
-//
-//    Route::apiResource('pagerole', 'PageRoleController');
-//
+
+    Route::apiResource('reservations','ReservationController',['except' => ['store']]);
+
 //    Route::apiResource('pagefollowers', 'PageFollowersController');
-//
-
-//
 //    Route::apiResource('user/likes', 'UserLikeController');
-
-
 
     Route::apiResource('orders', 'OrderController',['except' => ['store','destroy']]);
     Route::apiResource('carts', 'CartController',['except' => ['store','destroy']]);
-//
-//    Route::apiResource('offers', 'OfferController');
 
 
 

@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Reservation;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Gate;
 
 class CreateReservationRequest extends FormRequest
 {
@@ -13,7 +15,12 @@ class CreateReservationRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('invoice-create');
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('You have not permission');
     }
 
     /**

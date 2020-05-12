@@ -57,7 +57,19 @@ class PermissionTableSeeder extends Seeder
 
             'gallery-list',
             'gallery-create',
-            'gallery-delete'
+            'gallery-delete',
+
+            'invoice-list',
+            'invoice-create',
+            'invoice-update',
+            'invoice-delete',
+            'invoice-single',
+
+            'reservation-list',
+           // 'reservation-create',
+            'reservation-update',
+            'reservation-delete',
+            'reservation-single',
 
         ];
 

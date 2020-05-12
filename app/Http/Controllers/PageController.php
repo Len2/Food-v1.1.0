@@ -39,7 +39,7 @@ class PageController extends Controller
             return PageResource::collection(Page::all());
         }else if($this->user->hasRole('page-owner')){
             $page=$this->user->page;
-            return PageResource::collection(array($page));
+            return PageResource::collection($page);
         }
     }
 

@@ -8,6 +8,8 @@ use App\Invoice;
 use App\Http\Requests\Invoice\UpdateInvoiceRequest;
 use App\Http\Requests\Invoice\CreateInvoiceRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 
 class InvoiceController extends Controller
@@ -21,6 +23,9 @@ class InvoiceController extends Controller
     }
     public function index()
     {
+        if (!Gate::allows('invoice-list')) {
+            throw new AuthorizationException('You have not permission');
+        }
         return $contents = Storage::get('invoice/wjKrLmiQSXXDxP2prdZ6I7G0b51PHRfYSheKUbkQ.pdf');
         //InvoiceResource::collection(Invoice::all());
     }
@@ -56,7 +61,9 @@ class InvoiceController extends Controller
 
     public function destroy(Invoice $invoice)
     {
-
+        if (!Gate::allows('invoice-delete')) {
+            throw new AuthorizationException('You have not permission');
+        }
 
         $invoice->delete();
         $imagePath = $invoice->file;
