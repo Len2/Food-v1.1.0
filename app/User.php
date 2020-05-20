@@ -36,9 +36,24 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\Address');
     }
 
+    public function reservation(){
+        return $this->hasMany(Reservation::class);
+    }
 
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
 
+    // JWT Functions
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
+    public function getJWTCustomClaims()
+    {
+        return[];
+    }
 
 //    public function role()
 //    {
@@ -50,14 +65,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany('App\UserRole');
     }
     */
-
-    public function reservation(){
-        return $this->hasMany(Reservation::class);
-    }
-//
-    public function orders(){
-        return $this->hasMany(Order::class);
-    }
 //
 //    public function invoice(){
 //        return $this->hasMany('App\Invoice');
@@ -71,14 +78,4 @@ class User extends Authenticatable implements JWTSubject
 //        return $this->hasMany('App\GalleryImage');
 //    }
 
-    // JWT Functions
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return[];
-    }
 }

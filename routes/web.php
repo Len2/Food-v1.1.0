@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/test', function () {
-  //print_r(phpinfo());
-});
+//Route::get('/test', function () {
+//  //print_r(phpinfo());
+//});
 //
 //Auth::routes();
 //

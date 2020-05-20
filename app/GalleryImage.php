@@ -13,7 +13,6 @@ class GalleryImage extends Model
     {
         return $this->hasOne(Page::class);
     }
-
 //    public function user()
 //    {
 //        return $this->belongsTo(User::class);

@@ -13,7 +13,6 @@ class Page extends Model
         return $this->belongsToMany(User::class);
     }
 
-
     public function products()
     {
         return $this->hasMany(Product::class);
@@ -34,6 +33,10 @@ class Page extends Model
         return $this->hasMany(UserPage::class);
     }
 
+    public function taskLists()
+    {
+        return $this->hasMany(TaskList::class);
+    }
 //
 //    public function tables()
 //    {
@@ -61,11 +64,6 @@ class Page extends Model
 //    {
 //        return $this->hasMany(Invoice::class);
 //    }
-//
-    public function taskLists()
-    {
-        return $this->hasMany(TaskList::class);
-    }
 //
 //    public function address()
 //    {

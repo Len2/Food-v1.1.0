@@ -12,8 +12,6 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class);
     }
-
-
 //    public function page()
 //    {
 //        return $this->belongsTo(Page::class);
