@@ -24,6 +24,16 @@ Route::group(['middleware' => ['assign.guard:user_pages']],function ()
     ]);
 });
 
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'password'
+], function () {
+    Route::post('/create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
+});
+
+
 //Route::group(['middleware' => ['assign.guard:user_pages','jwt.auth']],function ()
 //{
 //
