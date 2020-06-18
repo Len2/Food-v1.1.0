@@ -21,7 +21,7 @@ class RoleController extends Controller
             throw new AuthorizationException('You have not permission for show roles');
         }
 
-        $roles = Role::get();
+        $roles = Role::paginate(20);
         if(is_null($roles)){
             return response()->json(["Error"=>"Role, not found"],404);
         }

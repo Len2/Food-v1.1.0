@@ -17,7 +17,7 @@ class UserController extends Controller
         if (! Gate::allows('user-list')) {
             throw new AuthorizationException('You have not permission for show users');
         }
-        $users = User::get();
+        $users = User::paginate(20);
         if(is_null($users)){
             return response()->json(["Error"=>"User, not found"],404);
         }
