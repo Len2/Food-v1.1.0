@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Category;
 use Image;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class CategoryController extends Controller
 {
@@ -27,7 +28,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        if (! Gate::allows('category-list')) {
+        if (! Gate::allows('category-lit')) {
             throw new AuthorizationException('You have not permission');
         }
         return CategoryResource::collection($this->user->page->categories);

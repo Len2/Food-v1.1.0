@@ -34,7 +34,7 @@ class ProductController extends Controller
         }
 
         if($this->user->hasRole('Admin')){
-            return ProductResource::collection(Product::all());
+            return ProductResource::collection(Product::with('page')->paginate(20));
         }else{
 //            $category = Category::find(1);
 //            $category->products; // will return all products for the category id 1

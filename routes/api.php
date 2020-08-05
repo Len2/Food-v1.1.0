@@ -6,6 +6,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //    return $request->user();
 });
 
+Route::get('/test', function () {
+    //print_r(phpinfo());
+    echo "Test";
+});
+
 Route::post('/signup',[
    'uses' => 'Api\ACL\LoginController@signup'
 ]);

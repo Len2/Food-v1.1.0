@@ -36,7 +36,11 @@ class PageController extends Controller
         }
 
         if($this->user->hasRole('Admin')){
-            return PageResource::collection(Page::all());
+
+
+            $page = Page::with('user')->paginate(20);
+           // $page->user();
+            return PageResource::collection($page);
         }else if($this->user->hasRole('page-owner')){
             $page=$this->user->page;
             return PageResource::collection($page);

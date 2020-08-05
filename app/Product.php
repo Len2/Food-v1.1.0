@@ -12,10 +12,10 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class);
     }
-//    public function page()
-//    {
-//        return $this->belongsTo(Page::class);
-//    }
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
+    }
 
 //    public function orderProducts()
 //    {
